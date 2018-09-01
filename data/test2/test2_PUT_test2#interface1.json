@@ -1,0 +1,11 @@
+{
+  "protocol": "http",
+  "pathname": "test2/interface1",
+  "method": "PUT",
+  "projectUniqId": "17d9a683-8f81-41c5-9931-57e598c78959",
+  "description": "测试专用",
+  "currentScene": "",
+  "proxyConfig": {},
+  "contextConfig": {},
+  "uniqId": "82ac0401-4abf-453f-bf16-373a300c22ba"
+}

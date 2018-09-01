@@ -1,0 +1,11 @@
+{
+  "protocol": "http",
+  "pathname": "test1/interface2",
+  "method": "POST",
+  "projectUniqId": "2e4b9cfc-80e5-40f5-813f-da4bfe1c6227",
+  "description": "测试专用2",
+  "currentScene": "default",
+  "proxyConfig": {},
+  "contextConfig": {},
+  "uniqId": "9acb92b8-a1a6-492f-83f3-b070be83c24d"
+}
