@@ -5,7 +5,7 @@ const datahubMiddleware = require('datahub-proxy-middleware');
 const pkg = require('./package');
 
 const datahubConfig = {
-  port: 5679,
+  port: 5678,
   hostname: '127.0.0.1',
   store: path.join(__dirname, 'data'),
   proxy: {

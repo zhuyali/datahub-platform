@@ -19,6 +19,8 @@
     "@vue/cli-service": "^3.0.1",
     "@vue/eslint-config-standard": "^3.0.1",
     "datahub-proxy-middleware": "^1.0.9",
+    "less": "^3.8.1",
+    "less-loader": "^4.1.0",
     "macaca-datahub": "^2.1.16",
     "vue-cli-plugin-element": "^1.0.0",
     "vue-template-compiler": "^2.5.17"

@@ -1,0 +1,22 @@
+body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(0,0,0,.65);
+}
+
+a {
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.pointer {
+  cursor: pointer;
+}

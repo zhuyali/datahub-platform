@@ -1,58 +1,53 @@
 <template>
   <div id="app">
-    <div>
-      <p>
-        If Element is successfully added to this project, you'll see an
-        <code v-text="'<el-button>'"></code>
-        below
-      </p>
-      <el-button>el-button</el-button>
-      {{ res }}
-    </div>
-    <router-view></router-view>
+    <el-header class="g-header">
+      <a href="/" class="m-title">
+        <img class="u-logo" src="//macacajs.github.io/macaca-datahub/logo/logo-color.svg" />
+        <span class="u-title">KAOLA-HUB</span>
+      </a>
+    </el-header>
+    <el-main class="g-content">
+      <router-view></router-view>
+    </el-main>
   </div>
 </template>
 
 <script>
-import axios from 'axios';
-
-import HelloWorld from './components/HelloWorld.vue'
-
 export default {
   name: 'app',
-  components: {
-    HelloWorld
+  created() {
   },
   data() {
-    return  {
-      res: null
-    }
+    return {
+
+    };
   },
-  created() {
-    axios.get('/api/project')
-      .then((response) => {
-        // handle success
-        console.log(response);
-        this.res = response;
-      })
-      .catch(function (error) {
-        // handle error
-        console.log(error);
-      })
-      .then(function () {
-        // always executed
-      });
-  }
 }
 </script>
 
-<style>
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="less">
+.g-content {
+  padding: 20px 50px!important;
+  min-height: calc(100vh - 80px);
+  background: #f0f2f5;
+}
+.g-header {
+  height: 80px!important;
+  padding: 0 50px!important;
+  .m-title {
+    display: flex;
+    align-items: center;
+    height: 80px;
+    .u-logo {
+      width: 30px;
+      height: 30px;
+    }
+    .u-title {
+      margin-left: 10px;
+      font-size: 1.2em;
+      font-weight: 500;
+      color: rgba(0, 0, 0, .85);
+    }
+  }
 }
 </style>
