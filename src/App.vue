@@ -16,6 +16,7 @@
 export default {
   name: 'app',
   created() {
+      
   },
   data() {
     return {
@@ -27,8 +28,8 @@ export default {
 
 <style lang="less">
 .g-content {
-  padding: 20px 50px!important;
-  min-height: calc(100vh - 80px);
+  padding: 0!important;
+  height: calc(100vh - 80px);
   background: #f0f2f5;
 }
 .g-header {

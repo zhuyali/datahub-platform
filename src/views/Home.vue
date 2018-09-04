@@ -44,14 +44,15 @@
       :dialogType="dialogType" 
       :dialogData="dialogData"
       :dialogVisible.sync="dialogVisible"
-      @add-or-update-success="getAllProject"></project-form>
+      @add-or-update-success="getAllProject">
+    </project-form>
   </div>
 </template>
 
 <script>
 import { projectService } from '@/api';
 import { ProjectForm } from '@/components';
-import { confirm } from '@/utils/messege/notify';
+import { confirmWrapper } from '@/utils/message';
 
 export default {
   name: 'home',
@@ -79,7 +80,7 @@ export default {
     // 删除项目点击时
     handleDeleteClick(uniqId) {
       const deletePromise = projectService.deleteProject.bind(null, uniqId);
-      confirm('删除', deletePromise, () => {
+      confirmWrapper('删除', deletePromise, () => {
         this.getAllProject();
       });
     },
@@ -93,7 +94,6 @@ export default {
       this.dialogVisible = true;
       this.dialogType = 'update';
     },
-    
     // 获取项目列表
     async getAllProject() {
       const res = await projectService.getAllProject();
@@ -107,6 +107,7 @@ export default {
 .g-home {
   display: flex;
   flex-wrap: wrap;
+  padding: 20px 50px;
   .m-box {
     flex: 0 1 calc(33.333% - 32px);
     margin: 15px 15px;
@@ -119,7 +120,7 @@ export default {
       .u-iconwrapper {
         display: flex;
         justify-content: center;
-        padding-bottom: 20px;
+        margin-top: -20px;
         border-bottom: 1px solid hsla(0,0%,67%,.2);
         .u-icon {
           font-size: 80px;
@@ -156,15 +157,14 @@ export default {
       }
       .m-operate {
         float: right;
-        font-size: 18px;
         color: #808080;
         .u-icon {
+          position: relative;
+          top: 3px;
+          font-size: 14px;
           &:last-child {
-            margin-left: 5px;
+            margin-left: 3px;
           }
-        }
-        .icon-shanchu {
-          color: #f61414;
         }
       }
     }

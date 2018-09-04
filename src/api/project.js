@@ -19,5 +19,5 @@ export function updateProject({ uniqId, projectName, description }) {
   return ajax.put(`/api/project/${uniqId}`, { data: {
     projectName,
     description
-  } })
+  } });
 }
