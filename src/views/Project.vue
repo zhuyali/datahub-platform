@@ -8,21 +8,29 @@
         <el-tab-pane label="实时快照" name="snapshot">实时快照</el-tab-pane>
       </el-tabs>
     </div>
-    <div class="g-main"></div>
+    <div class="g-main">
+      <component :is="currentTabComponent"></component>
+    </div>
   </div>
 </template>
 
 <script>
-import { InterfaceList } from '@/container';
+import { InterfaceList, InterfaceDetail } from '@/container';
 
 export default {
   components: {
-    'interface-list': InterfaceList
+    'interface-list': InterfaceList,
+    'interface-detail': InterfaceDetail
   },
   data() {
     return {
       activeName: 'interface'
     };
+  },
+  computed: {
+    currentTabComponent() {
+      return this.activeName === 'interface' ? 'interface-detail' : '';
+    }
   }
 }
 </script>
@@ -33,10 +41,14 @@ export default {
   height: calc(100vh - 81px);
   border-top: 1px solid #f0f2f5;
   .g-aside {
+    float: left;
     width: 300px;
     height: inherit;
     border-right: 1px solid rgba(0, 0, 0, 0.05);
   }
+
+  .g-main {
+    margin-left: 300px;
+  }
 }
 </style>
-

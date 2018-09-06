@@ -1,7 +1,7 @@
 <template>
   <el-dialog 
     :title="dialogType === 'add' ? '添加新接口' : '编辑接口'" 
-    width="420px" center 
+    width="500px" center 
     @open="handleDialogOpen"
     @close="handleDialogClose"
     :visible.sync="selfDialogVisible">
@@ -13,14 +13,14 @@
         <el-input v-model="form.description" placeholder="请输入接口描述"></el-input>
       </el-form-item>
       <el-form-item label="请求方式：" label-width="120px" prop="method">
-          <el-select style="width: 250px" v-model="form.method" default-first-option placeholder="请选择请求方式">
+          <el-select style="width: 330px" v-model="form.method" default-first-option placeholder="请选择请求方式">
               <el-option v-for="(method, index) in supportMethod" :key="index" :value="method"></el-option>
           </el-select>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
       <el-button @click="selfDialogVisible = false">取 消</el-button>
-      <el-button type="primary" @click="confirmAddOrUpdateProject">确 定</el-button>
+      <el-button type="primary" @click="confirmAddOrUpdateInterface">确 定</el-button>
     </div>
   </el-dialog>
 </template>
@@ -63,8 +63,8 @@ export default {
     }
   },
   methods: {
-    // 确认添加或更新项目
-    confirmAddOrUpdateProject() {
+    // 确认添加或更新接口
+    confirmAddOrUpdateInterface() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           if (this.dialogType === 'add') {

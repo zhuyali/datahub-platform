@@ -2,8 +2,6 @@ const path = require('path');
 const DataHub = require('macaca-datahub');
 const datahubMiddleware = require('datahub-proxy-middleware');
 
-const pkg = require('./package');
-
 const datahubConfig = {
   port: 5678,
   hostname: '127.0.0.1',
@@ -26,7 +24,7 @@ module.exports = {
   baseUrl: '/dist',
   configureWebpack: {
     entry: {
-      [pkg.name]: path.join(__dirname, 'src', 'main'),
+      main: path.join(__dirname, 'src', 'main'),
     },
     output: {
       path: path.resolve(__dirname, 'dist'),

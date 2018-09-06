@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <el-header class="g-header">
       <a href="/" class="m-title">
         <img class="u-logo" src="//macacajs.github.io/macaca-datahub/logo/logo-color.svg" />
@@ -45,7 +46,7 @@ export default {
     }
     .u-title {
       margin-left: 10px;
-      font-size: 1.2em;
+      font-size: 1.5em;
       font-weight: 500;
       color: rgba(0, 0, 0, .85);
     }

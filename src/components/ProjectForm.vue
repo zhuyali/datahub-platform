@@ -1,7 +1,7 @@
 <template>
   <el-dialog 
     :title="dialogType === 'add' ? '添加新项目' : '编辑项目'" 
-    width="420px" center 
+    width="500px" center 
     @open="handleDialogOpen"
     @close="handleDialogClose"
     :visible.sync="selfDialogVisible">

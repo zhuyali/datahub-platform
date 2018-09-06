@@ -1,5 +1,5 @@
 <template>
-  <div class="g-interface">
+  <div class="g-interface-list">
     <div class="m-searchbar">
       <el-input class="u-input" v-model="searchKey" placeholder="搜索接口">
         <i slot="prefix" class="el-input__icon el-icon-search"></i>
@@ -7,7 +7,11 @@
       <el-button class="u-addbtn" type="primary" icon="el-icon-plus" @click="handleAddClick">添加接口</el-button>
     </div>
     <div class="m-interfaces">
-      <div class="m-interface pointer" v-for="interfaceItem in filterInterfaces" :key="interfaceItem.uniqId">
+      <div class="m-interface pointer" 
+        v-for="(interfaceItem, index) in filterInterfaces" 
+        :key="interfaceItem.uniqId"
+        @click="handleInterfaceClick(interfaceItem, index)">
+        <div class="u-current-interface" v-show="currentInterfaceIndex === index"></div>
         <div class="m-interface-key">
           <div class="u-interface-path ellipsis" :title="interfaceItem.pathname">
             {{ interfaceItem.pathname }}
@@ -52,10 +56,14 @@ export default {
       interfaces: [],
       dialogData: {},
       dialogType: 'add',
-      dialogVisible: false,
+      dialogVisible: false
     };
   },
   computed: {
+    ...mapState({
+      currentInterface: state => state.currentInterface,
+      currentInterfaceIndex: state => state.currentInterfaceIndex
+    }),
     filterInterfaces() {
       const results = this.interfaces.filter((item) => {
         const matchPath = item.pathname.indexOf(this.searchKey) !== -1;
@@ -65,10 +73,30 @@ export default {
       return results;
     }
   },
-  created() {
-    this.getAllInterface();
+  async created() {
+    await this.getAllInterface();
+    this.getInterfaceByHash();
   },
   methods: {
+    // 根据 hash 值获取数据
+    getInterfaceByHash() {
+      const hashInfo = location.hash.slice(1);
+      const hashArray = hashInfo.split('&');
+      const pathname = decodeURIComponent(hashArray[0]).split('=')[1];
+      const method = decodeURIComponent(hashArray[1]).split('=')[1];
+      if (pathname && method) {
+        for (let i = 0; i < this.interfaces.length; i++) {
+          let interfaceItem = this.interfaces[i];
+          if (interfaceItem.method === method && interfaceItem.pathname === pathname) {
+            this.$store.dispatch('setCurrentInterfaceIndex', i);
+            this.$store.dispatch('setCurrentInterface', interfaceItem);
+            return;
+          }
+        }
+      }
+      this.$store.dispatch('setCurrentInterfaceIndex', 0);
+      this.$store.dispatch('setCurrentInterface', this.interfaces[0] || {});
+    },
     // 删除接口点击时
     handleDeleteClick(uniqId) {
       const deletePromise = interfaceService.deleteInterface.bind(null, uniqId);
@@ -93,22 +121,30 @@ export default {
       this.dialogType = 'add';
       this.dialogVisible = true;
     },
+    // 点击选中接口时
+    handleInterfaceClick(interfaceItem, index) {
+      this.$store.dispatch('setCurrentInterfaceIndex', index);
+      this.$store.dispatch('setCurrentInterface', interfaceItem);
+      // 改变 URL 哈希值
+      const method = interfaceItem.method;
+      const pathname = interfaceItem.pathname;
+      location.hash = `pathname=${encodeURIComponent(pathname)}&method=${encodeURIComponent(method)}`;
+    },
     // 获取接口列表
     async getAllInterface() {
       const res = await interfaceService.getAllInterface();
       this.interfaces = res.data || [];
-    },
+    }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.g-interface {
+.g-interface-list {
   height: inherit;
-  padding: 0 5px;
   .m-searchbar {
     overflow: hidden;
-    padding-bottom: 10px;
+    padding: 0 5px 10px;
     border-bottom: 1px solid rgba(0,0,0,.05);
     .u-input {
       float: left;
@@ -122,13 +158,24 @@ export default {
     height: calc(100% - 42px);
     overflow: auto;
     .m-interface {
+      position: relative;
       box-sizing: border-box;
       height: 80px;
       padding: 12px 20px 12px 16px;
-      overflow: auto;
       border-top: 1px solid rgba(0,0,0,.05);
       &:first-child {
         border-top: none;
+      }
+      &:last-child {
+        border-bottom: 1px solid rgba(0,0,0,.05);
+      }
+      .u-current-interface {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        width: 6px;
+        background: #409EFF;
       }
       .m-interface-key {
         overflow: hidden;
