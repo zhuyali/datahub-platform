@@ -36,8 +36,7 @@ export default {
   },
   computed: {
     ...mapState({
-      currentInterface: state => state.currentInterface,
-      currentInterfaceIndex: state => state.currentInterfaceIndex
+      currentInterface: state => state.currentInterface
     }),
     breadcrumb() {
       const currentMethod = this.currentInterface.method;

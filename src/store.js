@@ -5,23 +5,23 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
   state: {
-    currentInterface: {},
-    currentInterfaceIndex: 0
+    interfaceUniqId: '',
+    currentInterface: {}
   },
   mutations: {
+    setInterfaceUniqId(state, interfaceUniqId) {
+      state.interfaceUniqId = interfaceUniqId;
+    },
     setCurrentInterface(state, currentInterface) {
       state.currentInterface = currentInterface;
-    },
-    setCurrentInterfaceIndex(state, currentInterfaceIndex) {
-      state.currentInterfaceIndex = currentInterfaceIndex;
     }
   },
   actions: {
+    setInterfaceUniqId({ commit }, interfaceUniqId) {
+      commit('setInterfaceUniqId', interfaceUniqId);
+    },
     setCurrentInterface({ commit }, currentInterface) {
       commit('setCurrentInterface', currentInterface);
-    },
-    setCurrentInterfaceIndex({ commit }, currentInterfaceIndex) {
-      commit('setCurrentInterfaceIndex', currentInterfaceIndex);
     }
   }
 });

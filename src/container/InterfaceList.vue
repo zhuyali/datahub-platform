@@ -56,13 +56,13 @@ export default {
       interfaces: [],
       dialogData: {},
       dialogType: 'add',
-      dialogVisible: false
+      dialogVisible: false,
+      currentInterfaceIndex: 0
     };
   },
   computed: {
     ...mapState({
-      currentInterface: state => state.currentInterface,
-      currentInterfaceIndex: state => state.currentInterfaceIndex
+      currentInterface: state => state.currentInterface
     }),
     filterInterfaces() {
       const results = this.interfaces.filter((item) => {
@@ -88,14 +88,16 @@ export default {
         for (let i = 0; i < this.interfaces.length; i++) {
           let interfaceItem = this.interfaces[i];
           if (interfaceItem.method === method && interfaceItem.pathname === pathname) {
-            this.$store.dispatch('setCurrentInterfaceIndex', i);
+            this.currentInterfaceIndex = i;
             this.$store.dispatch('setCurrentInterface', interfaceItem);
+            this.$store.dispatch('setInterfaceUniqId', interfaceItem.uniqId);
             return;
           }
         }
       }
-      this.$store.dispatch('setCurrentInterfaceIndex', 0);
+      this.currentInterfaceIndex = 0;
       this.$store.dispatch('setCurrentInterface', this.interfaces[0] || {});
+      this.$store.dispatch('setInterfaceUniqId', this.interfaces[0] ? this.interfaces[0].uniqId : '');
     },
     // 删除接口点击时
     handleDeleteClick(uniqId) {
@@ -123,8 +125,9 @@ export default {
     },
     // 点击选中接口时
     handleInterfaceClick(interfaceItem, index) {
-      this.$store.dispatch('setCurrentInterfaceIndex', index);
+      this.currentInterfaceIndex = index;
       this.$store.dispatch('setCurrentInterface', interfaceItem);
+      this.$store.dispatch('setInterfaceUniqId', interfaceItem.uniqId);
       // 改变 URL 哈希值
       const method = interfaceItem.method;
       const pathname = interfaceItem.pathname;

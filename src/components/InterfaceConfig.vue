@@ -37,17 +37,29 @@ export default {
   components: {
     'context-config-form': ContextConfigForm
   },
+  watch: {
+    currentInterface() {
+      if (this.currentInterface && this.currentInterface.contextConfig) {
+        const contextConfig = this.currentInterface.contextConfig
+        this.responseDelay = contextConfig.responseDelay || 0;
+        this.responseStatus = contextConfig.responseStatus || 200;
+        this.responseHeaders = contextConfig.responseHeaders || {};
+      }
+    }
+  },
   data() {
     return {
       dialogData: {},
+      responseDelay: 0,
+      responseStatus: 200,
+      responseHeaders: {},
       dialogVisible: false,
       supportMethod: ['ALL', 'GET', 'POST', 'PUT', 'DELETE'],
     }
   },
   computed: {
     ...mapState({
-      currentInterface: state => state.currentInterface,
-      currentInterfaceIndex: state => state.currentInterfaceIndex
+      currentInterface: state => state.currentInterface
     }),
     tableData() {
       const result = [];
@@ -62,18 +74,6 @@ export default {
         });
       }
       return result;
-    },
-    responseDelay() {
-      const contextConfig = this.currentInterface.contextConfig;
-      return contextConfig ? contextConfig.responseDelay || 0 : 0;
-    },
-    responseStatus() {
-      const contextConfig = this.currentInterface.contextConfig;
-      return contextConfig ? contextConfig.responseStatus || 200 : 200
-    },
-    responseHeaders() {
-      const contextConfig = this.currentInterface.contextConfig;
-      return contextConfig ? contextConfig.responseHeaders || {} : {}
     }
   },
   methods: {
