@@ -1,20 +1,26 @@
 <template>
   <div class="g-scene">
     <h2 class="black">场景管理</h2>
-    <el-button type="primary" @click="handleSceneAdd">添加场景</el-button>
+    <el-button type="primary" @click="handleAddClick">添加场景</el-button>
     <div class="m-scene-list">
       <div class="m-scene-item" v-for="scene in scenes" :key="scene.uniqId">
         <el-radio class="m-radio" v-model="currentScene" :label="scene.sceneName" border>
           {{ scene.sceneName }}
-          <div class="m-icons">
-            <i class="u-icon el-icon-view" title="预览" 
+          <div :class="{ 'm-icons': true,
+            'u-opacity': currentScene === scene.sceneName }">
+            <i class="u-icon el-icon-view" title="预览" @click="handlePreviewClick"
               v-if="currentInterface.method === 'GET' || currentInterface.method === 'ALL'"></i>
-            <i class="u-icon el-icon-edit" title="编辑"></i>
-            <i class="u-icon el-icon-delete" title="删除"></i>
+            <i class="u-icon el-icon-edit" title="编辑" @click="handleEditClick"></i>
+            <i class="u-icon el-icon-delete" title="删除" @click="handleDeleteClick"></i>
           </div>
         </el-radio>
       </div>
     </div>
+
+    <scene-form
+      :dialogType="dialogType" 
+      :dialogVisible.sync="dialogVisible">
+    </scene-form>
   </div>
 </template>
 
@@ -22,8 +28,12 @@
 import { mapState } from 'vuex';
 
 import { sceneService } from '@/api';
+import SceneForm from './forms/SceneForm';
 
 export default {
+  components: {
+    'scene-form': SceneForm
+  },
   watch: {
     interfaceUniqId() {
       this.getAllScene();
@@ -37,7 +47,9 @@ export default {
   data() {
     return {
       scenes: [],
-      currentScene: ''
+      currentScene: '',
+      dialogType: 'add',
+      dialogVisible: false
     }
   },
   computed: mapState({
@@ -46,8 +58,22 @@ export default {
   }),
   methods: {
     // 点击添加场景按钮
-    handleSceneAdd() {
-      
+    handleAddClick() {
+      this.dialogType = 'add';
+      this.dialogVisible = true;
+    },
+    // 点击预览场景
+    handlePreviewClick() {
+
+    },
+    // 点击编辑场景
+    handleEditClick() {
+      this.dialogType = 'edit';
+      this.dialogVisible = true;
+    },
+    // 点击删除场景
+    handleDeleteClick() {
+
     },
     // 获取所有的场景数据
     async getAllScene() {
@@ -69,8 +95,15 @@ export default {
       flex: 0 0 220px;
       .m-radio {
         width: 200px;
+        &:hover {
+          .m-icons {
+            opacity: 1;
+          }
+        }
         .m-icons {
           float: right;
+          opacity: 0;
+          transition: opacity .3s linear;
           .u-icon {
             margin-left: 3px;
             transition: color .5s linear;
@@ -84,6 +117,9 @@ export default {
           .el-icon-edit:hover {
             color: #E6A23C;
           }
+        }
+        .u-opacity {
+          opacity: 1;
         }
       }
     }

@@ -9,3 +9,15 @@
 .el-tab-pane {
   height: 100%;
 }
+
+.CodeMirror-placeholder {
+  color: #c0c4cc!important;
+}
+
+.CodeMirror-lint-tooltip {
+  z-index: 5000;
+}
+
+.CodeMirror pre, .CodeMirror-linenumber, .CodeMirror-gutter-elt {
+  line-height: 21px!important;
+}

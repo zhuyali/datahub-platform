@@ -23,7 +23,8 @@
         <div class="u-interface-desc ellipsis" :title="interfaceItem.description">
           {{ interfaceItem.description }}
         </div>
-        <div class="m-operate">
+        <div :class="{ 'm-operate': true, 
+          'u-opacity': currentInterfaceIndex === index }">
           <i class="iconfont icon-shezhi u-icon" @click="handleUpdateClick(interfaceItem)"></i>
           <i class="iconfont icon-shanchu u-icon" @click="handleDeleteClick(interfaceItem.uniqId)"></i>
         </div>
@@ -172,6 +173,11 @@ export default {
       &:last-child {
         border-bottom: 1px solid rgba(0,0,0,.05);
       }
+      &:hover {
+        .m-operate {
+          opacity: 1;
+        }
+      }
       .u-current-interface {
         position: absolute;
         top: 0;
@@ -198,12 +204,17 @@ export default {
       }
       .m-operate {
         float: right;
+        opacity: 0;
+        transition: opacity .3s linear;
         .u-icon {
           font-size: 14px;
           &:last-child {
             margin-left: 3px;
           }
         }
+      }
+      .u-opacity {
+        opacity: 1;
       }
     }
   }

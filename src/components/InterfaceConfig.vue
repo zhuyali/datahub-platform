@@ -31,7 +31,7 @@
 <script>
 import { mapState } from 'vuex';
 
-import ContextConfigForm from './ContextConfigForm';
+import ContextConfigForm from './forms/ContextConfigForm';
 
 export default {
   components: {
