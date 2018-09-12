@@ -1,8 +1,15 @@
 <template>
-  <el-input class="u-textarea" type="textarea" :rows="10" id="code"></el-input>
+  <el-input 
+    :key="interfaceUniqId"
+    class="u-textarea"
+    type="textarea" 
+    :rows="10" 
+    id="code"></el-input>
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 import 'codemirror/addon/lint/lint';
 import 'codemirror/lib/codemirror.css';
 import 'codemirror/addon/lint/lint.css';
@@ -17,18 +24,22 @@ import 'codemirror/mode/javascript/javascript';
 import 'codemirror/addon/selection/active-line';
 import * as CodeMirror from 'codemirror/lib/codemirror';
 
+import '@/assets/javascript/format';
 import '@/assets/javascript/jsonlint';
 
 export default {
+  props: ['value'],
   data() {
     return {
+      codeMirrorEditor: null
     }
   },
-  method: {
-  },
+  computed: mapState({
+    interfaceUniqId: state => state.interfaceUniqId
+  }),
   mounted() {
     const codeElement = document.getElementById('code');
-    const codeMirrorEditor = CodeMirror.fromTextArea(codeElement, {
+    this.codeMirrorEditor = CodeMirror.fromTextArea(codeElement, {
       mode: {
         name: 'javascript',
         json: true

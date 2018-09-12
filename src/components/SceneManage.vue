@@ -4,14 +4,16 @@
     <el-button type="primary" @click="handleAddClick">添加场景</el-button>
     <div class="m-scene-list">
       <div class="m-scene-item" v-for="scene in scenes" :key="scene.uniqId">
-        <el-radio class="m-radio" v-model="currentScene" :label="scene.sceneName" border>
+        <el-radio class="m-radio" v-model="currentScene" :label="scene.sceneName" border @change="handleRadioChange">
           {{ scene.sceneName }}
           <div :class="{ 'm-icons': true,
             'u-opacity': currentScene === scene.sceneName }">
-            <i class="u-icon el-icon-view" title="预览" @click="handlePreviewClick"
-              v-if="currentInterface.method === 'GET' || currentInterface.method === 'ALL'"></i>
-            <i class="u-icon el-icon-edit" title="编辑" @click="handleEditClick"></i>
-            <i class="u-icon el-icon-delete" title="删除" @click="handleDeleteClick"></i>
+            <a :href="previewLink" style="color: #409EFF" target="_blank">
+              <i class="u-icon el-icon-view" title="预览"
+                v-if="currentInterface.method === 'GET' || currentInterface.method === 'ALL'"></i>
+            </a>
+            <i class="u-icon el-icon-edit" title="编辑" @click.prevent="handleEditClick(scene)"></i>
+            <i class="u-icon el-icon-delete" title="删除" @click.prevent="handleDeleteClick(scene.uniqId)"></i>
           </div>
         </el-radio>
       </div>
@@ -19,7 +21,9 @@
 
     <scene-form
       :dialogType="dialogType" 
-      :dialogVisible.sync="dialogVisible">
+      :dialogData="dialogData"
+      :dialogVisible.sync="dialogVisible"
+      @add-or-update-success="handleSceneChange">
     </scene-form>
   </div>
 </template>
@@ -27,8 +31,11 @@
 <script>
 import { mapState } from 'vuex';
 
-import { sceneService } from '@/api';
 import SceneForm from './forms/SceneForm';
+import { sceneService, interfaceService } from '@/api';
+import { confirmWrapper, messageWrapper } from '@/utils/message';
+
+const projectName = window.context.projectName;
 
 export default {
   components: {
@@ -39,41 +46,63 @@ export default {
       this.getAllScene();
     },
     currentInterface() {
-      if (this.currentInterface) {
-        this.currentScene = this.currentInterface.currentScene || '';
-      }
+      this.currentScene = this.currentInterface.currentScene || '';
     }
   },
   data() {
     return {
       scenes: [],
+      dialogData: {},
       currentScene: '',
       dialogType: 'add',
       dialogVisible: false
     }
   },
-  computed: mapState({
-    interfaceUniqId: state => state.interfaceUniqId,
-    currentInterface: state => state.currentInterface
-  }),
+  computed: {
+    ...mapState({
+      interfaceUniqId: state => state.interfaceUniqId,
+      currentInterface: state => state.currentInterface
+    }),
+    previewLink() {
+      return `//${location.host}/data/${projectName}/${this.currentInterface.pathname}`;
+    }
+  },
   methods: {
     // 点击添加场景按钮
     handleAddClick() {
+      this.dialogData = {};
       this.dialogType = 'add';
       this.dialogVisible = true;
     },
-    // 点击预览场景
-    handlePreviewClick() {
-
-    },
     // 点击编辑场景
-    handleEditClick() {
+    handleEditClick({ sceneName, data, uniqId }) {
       this.dialogType = 'edit';
       this.dialogVisible = true;
+      this.dialogData.data = data;
+      this.dialogData.uniqId = uniqId;
+      this.dialogData.sceneName = sceneName;
     },
     // 点击删除场景
-    handleDeleteClick() {
-
+    handleDeleteClick(uniqId) {
+      const deletePromise = sceneService.deleteScene.bind(null, uniqId);
+      confirmWrapper('删除场景', deletePromise, () => {
+        this.handleSceneChange();
+      });
+    },
+    // 选择的场景变化
+    handleRadioChange() {
+      const updatePromise = interfaceService.updateInterface.bind(null, {
+        uniqId: this.currentInterface.uniqId,
+        currentScene: this.currentScene
+      });
+      messageWrapper('切换场景', updatePromise, () => {
+        this.$emit('update-success');
+      });
+    },
+    // 场景有所变化时
+    handleSceneChange() {
+      this.getAllScene();
+      this.$emit('update-success');
     },
     // 获取所有的场景数据
     async getAllScene() {
@@ -90,9 +119,11 @@ export default {
 .g-scene {
   .m-scene-list {
     display: flex;
+    flex-wrap: wrap;
     margin-top: 10px;
     .m-scene-item {
       flex: 0 0 220px;
+      margin: 5px 0;
       .m-radio {
         width: 200px;
         &:hover {

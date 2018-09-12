@@ -7,7 +7,7 @@
     </el-breadcrumb>
     <div class="g-interface-content">
       <interface-config @update-success="getOneInterface"></interface-config>
-      <scene-manage></scene-manage>
+      <scene-manage @update-success="getOneInterface"></scene-manage>
       <proxy-mode></proxy-mode>
       <request-schema></request-schema>
       <response-schema></response-schema>

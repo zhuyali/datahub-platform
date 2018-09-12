@@ -39,8 +39,8 @@ export default {
   },
   watch: {
     currentInterface() {
-      if (this.currentInterface && this.currentInterface.contextConfig) {
-        const contextConfig = this.currentInterface.contextConfig
+      if (this.currentInterface.contextConfig) {
+        const contextConfig = this.currentInterface.contextConfig;
         this.responseDelay = contextConfig.responseDelay || 0;
         this.responseStatus = contextConfig.responseStatus || 200;
         this.responseHeaders = contextConfig.responseHeaders || {};
