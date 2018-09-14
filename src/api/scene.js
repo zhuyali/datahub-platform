@@ -16,8 +16,9 @@ export function addScene({ interfaceUniqId, sceneName, data }) {
   } });
 }
 
-export function updateScene({ uniqId, sceneName, data }) {
+export function updateScene({ interfaceUniqId, uniqId, sceneName, data }) {
   return ajax.put(`/api/scene/${uniqId}`, { data: {
+    interfaceUniqId,
     sceneName,
     data
   } });
