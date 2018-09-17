@@ -8,7 +8,7 @@
     <div class="g-interface-content">
       <interface-config @update-success="getOneInterface"></interface-config>
       <scene-manage @update-success="getOneInterface"></scene-manage>
-      <proxy-mode></proxy-mode>
+      <proxy-mode @update-success="getOneInterface"></proxy-mode>
       <request-schema></request-schema>
       <response-schema></response-schema>
     </div>
@@ -56,7 +56,12 @@ export default {
 
 <style lang="less" scoped>
 .g-interface-detail {
+  height: inherit;
   padding: 0 20px;
+  .g-interface-content {
+    height: calc(100% - 40px);
+    overflow: auto;
+  }
   .m-breadcrumb {
     height: 38px;
     line-height: 38px;

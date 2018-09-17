@@ -48,6 +48,7 @@ export default {
   }
 
   .g-main {
+    height: inherit;
     margin-left: 300px;
   }
 }

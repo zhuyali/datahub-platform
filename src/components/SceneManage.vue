@@ -4,11 +4,11 @@
     <el-button type="primary" @click="handleAddClick">添加场景</el-button>
     <div class="m-scene-list">
       <div class="m-scene-item" v-for="scene in scenes" :key="scene.uniqId">
-        <el-radio class="m-radio" v-model="currentScene" :label="scene.sceneName" border @change="handleRadioChange">
-          {{ scene.sceneName }}
+        <el-radio class="m-radio" v-model="currentScene" :label="scene.sceneName" :title="scene.sceneName" border @change="handleRadioChange">
+          <span class="u-scenename ellipsis">{{ scene.sceneName }}</span>
           <div :class="{ 'm-icons': true,
             'u-opacity': currentScene === scene.sceneName }">
-            <a :href="previewLink" style="color: #409EFF" target="_blank">
+            <a :href="`${previewLink}${scene.sceneName}`" style="color: #409EFF" target="_blank">
               <i class="u-icon el-icon-view" title="预览"
                 v-if="currentInterface.method === 'GET' || currentInterface.method === 'ALL'"></i>
             </a>
@@ -64,7 +64,7 @@ export default {
       currentInterface: state => state.currentInterface
     }),
     previewLink() {
-      return `//${location.host}/data/${projectName}/${this.currentInterface.pathname}`;
+      return `//${location.host}/api/preview/scene?interfaceUniqId=${this.interfaceUniqId}&sceneName=`;
     }
   },
   methods: {
@@ -92,7 +92,7 @@ export default {
     // 选择的场景变化
     handleRadioChange() {
       const updatePromise = interfaceService.updateInterface.bind(null, {
-        uniqId: this.currentInterface.uniqId,
+        uniqId: this.interfaceUniqId,
         currentScene: this.currentScene
       });
       messageWrapper('切换场景', updatePromise, () => {
@@ -124,6 +124,10 @@ export default {
     .m-scene-item {
       flex: 0 0 220px;
       margin: 5px 0;
+      .u-scenename {
+        display: inline-block;
+        width: calc(100% - 70px);
+      }
       .m-radio {
         width: 200px;
         &:hover {

@@ -125,13 +125,16 @@ export default {
       this.dialogVisible = true;
     },
     // 点击选中接口时
-    handleInterfaceClick(interfaceItem, index) {
+    async handleInterfaceClick(interfaceItem, index) {
       this.currentInterfaceIndex = index;
-      this.$store.dispatch('setCurrentInterface', interfaceItem);
       this.$store.dispatch('setInterfaceUniqId', interfaceItem.uniqId);
+
+      const res = await interfaceService.getOneInterface(interfaceItem.uniqId);
+      const currentInterface = res.data;
+      this.$store.dispatch('setCurrentInterface', currentInterface);
       // 改变 URL 哈希值
-      const method = interfaceItem.method;
-      const pathname = interfaceItem.pathname;
+      const method = currentInterface.method;
+      const pathname = currentInterface.pathname;
       location.hash = `pathname=${encodeURIComponent(pathname)}&method=${encodeURIComponent(method)}`;
     },
     // 获取接口列表
