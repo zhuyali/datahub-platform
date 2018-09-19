@@ -9,8 +9,7 @@
       <interface-config @update-success="getOneInterface"></interface-config>
       <scene-manage @update-success="getOneInterface"></scene-manage>
       <proxy-mode @update-success="getOneInterface"></proxy-mode>
-      <request-schema></request-schema>
-      <response-schema></response-schema>
+      <schema></schema>
     </div>
   </div>
 </template>
@@ -19,14 +18,13 @@
 import { mapState } from 'vuex';
 
 import { interfaceService } from '@/api';
-import { InterfaceConfig, SceneManage, ProxyMode, RequestSchema, ResponseSchema } from '@/components';
+import { InterfaceConfig, SceneManage, ProxyMode, Schema } from '@/components';
 
 export default {
   components: {
+    'schema': Schema,
     'proxy-mode': ProxyMode,
     'scene-manage': SceneManage,
-    'request-schema': RequestSchema,
-    'response-schema': ResponseSchema,
     'interface-config': InterfaceConfig
   },
   data() {

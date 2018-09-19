@@ -1,10 +1,11 @@
 <template>
-  <el-input 
-    :key="interfaceUniqId"
+  <el-input
+    :key="selfKey"
     class="u-textarea"
     type="textarea" 
     :rows="10" 
-    id="code"></el-input>
+    :id="selfKey">
+  </el-input>
 </template>
 
 <script>
@@ -28,38 +29,48 @@ import '@/assets/javascript/format';
 import '@/assets/javascript/jsonlint';
 
 export default {
-  props: ['value'],
+  props: ['selfKey', 'visible', 'hasChange'],
+  watch: {
+    visible() {
+      this.codeMirrorEditor.toTextArea();
+      this.init();
+    }
+  },
   data() {
     return {
       codeMirrorEditor: null
     }
   },
-  computed: mapState({
-    interfaceUniqId: state => state.interfaceUniqId
-  }),
   mounted() {
-    const codeElement = document.getElementById('code');
-    this.codeMirrorEditor = CodeMirror.fromTextArea(codeElement, {
-      mode: {
-        name: 'javascript',
-        json: true
-      },
-      lint: true,
-      tabSize: 2,
-      foldGutter: true,
-      lineNumbers: true,
-      smartIndent: true,
-      matchBrackets: true,
-      styleActiveLine: true,
-      autoCloseBrackets: true,
-      gutters: [
-        'CodeMirror-linenumbers',
-        'CodeMirror-foldgutter',
-        'CodeMirror-activeline-gutter',
-        'CodeMirror-lint-markers'
-      ],
-      placeholder: '{\n  ... Input JSON data here\n}'
-    });
+    if (this.hasChange) {
+      this.init();
+    }
+  },
+  methods: {
+    init() {
+      const codeElement = document.getElementById(this.selfKey);
+      this.codeMirrorEditor = CodeMirror.fromTextArea(codeElement, {
+        mode: {
+          name: 'javascript',
+          json: true
+        },
+        lint: true,
+        tabSize: 2,
+        foldGutter: true,
+        lineNumbers: true,
+        smartIndent: true,
+        matchBrackets: true,
+        styleActiveLine: true,
+        autoCloseBrackets: true,
+        gutters: [
+          'CodeMirror-linenumbers',
+          'CodeMirror-foldgutter',
+          'CodeMirror-activeline-gutter',
+          'CodeMirror-lint-markers'
+        ],
+        placeholder: '{\n  ... Input JSON data here\n}'
+      });
+    }
   }
 }
 </script>

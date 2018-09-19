@@ -8,7 +8,13 @@
         <el-input v-model="form.sceneName" placeholder="请输入场景名称"></el-input>
       </el-form-item>
       <el-form-item label="场景数据：" label-width="120px" prop="data">
-        <code-mirror ref="code-mirror"></code-mirror>
+        <code-mirror
+          :hasChange="hasChange"
+          :visible="selfDialogVisible"
+          :key="`${interfaceUniqId}-scene`"
+          :ref="`${interfaceUniqId}-scene-code-mirror`" 
+          :selfKey="`${interfaceUniqId}-scene-code-mirror`">
+        </code-mirror>
       </el-form-item>
     </el-form>
     <div slot="footer" class="dialog-footer">
@@ -22,7 +28,8 @@
 import { mapState } from 'vuex';
 
 import { sceneService } from '@/api';
-import { CodeMirror } from '@/components';
+import CodeMirror from '../CodeMirror';
+import { validateJSON } from '@/utils/helper';
 import { messageWrapper } from '@/utils/message';
 
 export default {
@@ -31,6 +38,9 @@ export default {
     'code-mirror': CodeMirror
   },
   watch: {
+    interfaceUniqId(newVal, oldVal) {
+      this.hasChange = oldVal ? true : true;
+    },
     dialogVisible() {
       this.selfDialogVisible = this.dialogVisible;
     },
@@ -40,6 +50,7 @@ export default {
   },
   data() {
     return {
+      hasChange: false,
       selfDialogVisible: false,
       form: {
         interfaceUniqId: '',
@@ -68,32 +79,22 @@ export default {
         this.form.uniqId = this.dialogData.uniqId || '';
         this.form.sceneName = this.dialogData.sceneName || '';
         this.form.interfaceUniqId = this.interfaceUniqId || '';
-        const codeMirrorEditor = this.$refs['code-mirror'].codeMirrorEditor;
+        const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-scene-code-mirror`].codeMirrorEditor;
         const totalLines = codeMirrorEditor.lineCount();
         codeMirrorEditor.doc.setValue(JSON.stringify(this.form.data));
         codeMirrorEditor.autoFormatRange({
           line: 0, ch: 0
         }, {
           line: totalLines
-        })
+        });
       });
-    },
-    // 检验 JSON 格式
-    validateJSON(json) {
-      let [data, error] = [{}, null];
-      try {
-        data = JSON.parse(json);
-      } catch (err) {
-        error = err;
-      }
-      return { data, error };
     },
     // 确认添加或更新场景
     confirmAddOrUpdateScene() {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           const codeMirrorEditor = this.$refs['code-mirror'].codeMirrorEditor;
-          const { data, error } = this.validateJSON(codeMirrorEditor.doc.getValue());
+          const { data, error } = validateJSON(codeMirrorEditor.doc.getValue());
           if (error) {
             this.$message.error('JSON 格式错误，请检查后提交');
           } else {

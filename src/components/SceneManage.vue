@@ -106,10 +106,8 @@ export default {
     },
     // 获取所有的场景数据
     async getAllScene() {
-      if (this.interfaceUniqId) {
-        const res = await sceneService.getAllScene(this.interfaceUniqId);
-        this.scenes = res.data || [];
-      }
+      const res = await sceneService.getAllScene(this.interfaceUniqId);
+      this.scenes = res.data || [];
     }
   }
 }
