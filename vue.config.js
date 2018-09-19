@@ -22,10 +22,26 @@ const defaultDatahub = new DataHub({
 
 module.exports = {
   baseUrl: '/dist',
+  chainWebpack: config => {
+    const svgRule = config.module.rule('svg')
+    svgRule.uses.clear()
+    svgRule
+      .use('url-loader')
+      .loader('url-loader')
+    const fontRule = config.module.rule('fonts')
+    fontRule.uses.clear()
+    fontRule
+      .use('url-loader')
+      .loader('url-loader')
+    config.plugins.delete('html')
+    config.plugins.delete('preload')
+    config.plugins.delete('prefetch')
+    config.optimization.splitChunks(false)
+  },
+  css: {
+    extract: false
+  },
   configureWebpack: {
-    entry: {
-      main: path.join(__dirname, 'src', 'main'),
-    },
     output: {
       path: path.resolve(__dirname, 'dist'),
       filename: 'datahub-view.js'
