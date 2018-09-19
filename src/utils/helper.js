@@ -12,7 +12,7 @@ export function validateJSON(json) {
 // 遍历 schema
 function walker(schema, level, result) {
   if (schema.properties) {
-    const requiredList = schema.requiredList || [];
+    const requiredList = schema.required || [];
     Object.keys(schema.properties).forEach((key) => {
       const keySchema = schema.properties[key];
       const {

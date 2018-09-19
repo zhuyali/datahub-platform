@@ -19,7 +19,11 @@
           <span class="capitalize">{{ scope.row.type }}</span>
         </template>
       </el-table-column>
-      <el-table-column prop="required" label="是否必须"></el-table-column>
+      <el-table-column prop="required" label="是否必须">
+        <template slot-scope="scope">
+          <el-checkbox v-model="scope.row.required" :disabled="true"></el-checkbox>
+        </template>
+      </el-table-column>
       <el-table-column prop="description" label="参数描述"></el-table-column>
     </el-table>
 
