@@ -18,6 +18,10 @@ a {
   white-space: nowrap;
 }
 
+.capitalize {
+  text-transform: capitalize;
+}
+
 .pointer {
   cursor: pointer;
 }

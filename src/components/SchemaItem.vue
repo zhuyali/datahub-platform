@@ -8,6 +8,21 @@
       </div>
     </div>
 
+    <el-table :data="tableData" border style="width: 100%; font-size: 14px;">
+      <el-table-column prop="key" label="字段">
+        <template slot-scope="scope">
+          <span :style="{ marginLeft: `${15 * scope.row.level}px` }">{{ scope.row.key }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="type" label="类型">
+        <template slot-scope="scope">
+          <span class="capitalize">{{ scope.row.type }}</span>
+        </template>
+      </el-table-column>
+      <el-table-column prop="required" label="是否必须"></el-table-column>
+      <el-table-column prop="description" label="参数描述"></el-table-column>
+    </el-table>
+
     <schema-form
       :type="type"
       :schema="schema"
@@ -37,7 +52,11 @@ export default {
       return this.type === 'request';
     },
     tableData() {
-      return genSchemaList(this.schema || {});
+      try {
+        return genSchemaList(this.schema || {});
+      } catch(e) {
+        return [];
+      } 
     }
   },
   methods: {

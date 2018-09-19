@@ -57,8 +57,10 @@ export default {
   height: inherit;
   padding: 0 20px;
   .g-interface-content {
+    box-sizing: border-box;
     height: calc(100% - 40px);
     overflow: auto;
+    padding-bottom: 20px;
   }
   .m-breadcrumb {
     height: 38px;
