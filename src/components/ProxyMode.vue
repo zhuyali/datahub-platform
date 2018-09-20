@@ -103,7 +103,7 @@ export default {
           [itemName]: this[itemName]
         }
       })
-      messageWrapper(message, updatePromise, () => {
+      messageWrapper(message, updatePromise, undefined, undefined, () => {
         this.$emit('update-success')
       })
     }

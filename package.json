@@ -1,6 +1,6 @@
 {
   "name": "datahub-platform",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
@@ -10,6 +10,9 @@
     "dist/*.js",
     "dist/*.css"
   ],
+  "links": {
+    "issue": "//github.com/zhuyali/datahub-platform/issues"
+  },
   "dependencies": {
     "axios": "^0.18.0",
     "codemirror": "^5.40.0",

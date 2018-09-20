@@ -4,7 +4,10 @@
     <el-header class="g-header">
       <a href="/" class="m-title">
         <img class="u-logo" src="//macacajs.github.io/macaca-datahub/logo/logo-color.svg" />
-        <span class="u-title">KAOLA-HUB</span>
+        <span class="u-title u-font">KAOLA-HUB</span>
+      </a>
+      <a class="u-issue" :href="issueLink" target="_blank">
+        <span class="u-font">问题反馈</span>
       </a>
     </el-header>
     <el-main class="g-content">
@@ -14,14 +17,13 @@
 </template>
 
 <script>
+const pkg = require('../package.json')
+
 export default {
   name: 'app',
-  created () {
-
-  },
-  data () {
-    return {
-
+  computed: {
+    issueLink () {
+      return `${pkg.links.issue}?utf8=%E2%9C%93&q=`
     }
   }
 }
@@ -37,6 +39,7 @@ export default {
   height: 80px!important;
   padding: 0 50px!important;
   .m-title {
+    float: left;
     display: flex;
     align-items: center;
     height: 80px;
@@ -47,9 +50,16 @@ export default {
     .u-title {
       margin-left: 10px;
       font-size: 1.5em;
-      font-weight: 500;
-      color: rgba(0, 0, 0, .85);
     }
+  }
+  .u-issue {
+    float: right;
+    font-size: 1.2em;
+    line-height: 80px;
+  }
+  .u-font {
+    font-weight: 500;
+    color: rgba(0, 0, 0, .85);
   }
 }
 </style>

@@ -93,7 +93,7 @@ export default {
         uniqId: this.interfaceUniqId,
         currentScene: this.currentScene
       })
-      messageWrapper('切换场景', updatePromise, () => {
+      messageWrapper('切换场景', updatePromise, undefined, undefined, () => {
         this.$emit('update-success')
       })
     },
