@@ -137,10 +137,21 @@ export default {
       const pathname = currentInterface.pathname
       location.hash = `pathname=${encodeURIComponent(pathname)}&method=${encodeURIComponent(method)}`
     },
+    // 获取各接口的代理情况，方便进行全局代理计算
+    getProxyList () {
+      const proxyList = {}
+      this.interfaces.forEach((item) => {
+        const proxyConfig = item.proxyConfig
+        const uniqId = item.uniqId
+        proxyList[uniqId] = !!proxyConfig.enabled
+      })
+      this.$store.dispatch('setProxyList', proxyList)
+    },
     // 获取接口列表
     async getAllInterface () {
       const res = await interfaceService.getAllInterface()
       this.interfaces = res.data || []
+      this.getProxyList()
     }
   }
 }

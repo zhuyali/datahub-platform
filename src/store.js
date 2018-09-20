@@ -5,10 +5,17 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    proxyList: {},
     interfaceUniqId: '',
     currentInterface: {}
   },
   mutations: {
+    setProxy (state, { interfaceUniqId, enabled }) {
+      state.proxyList[interfaceUniqId] = enabled
+    },
+    setProxyList (state, proxyList) {
+      state.proxyList = proxyList
+    },
     setInterfaceUniqId (state, interfaceUniqId) {
       state.interfaceUniqId = interfaceUniqId
     },
@@ -17,6 +24,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setProxy ({ commit }, { interfaceUniqId, enabled }) {
+      commit('setProxy', { interfaceUniqId, enabled })
+    },
+    setProxyList ({ commit }, proxyList) {
+      commit('setProxyList', proxyList)
+    },
     setInterfaceUniqId ({ commit }, interfaceUniqId) {
       commit('setInterfaceUniqId', interfaceUniqId)
     },

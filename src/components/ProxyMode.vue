@@ -65,10 +65,14 @@ export default {
       }
       this.enabled = this.proxyConfig.enabled
       this.activeIndex = this.proxyConfig.activeIndex
+    },
+    allProxyList () {
+      this.enabled = this.allProxyList[this.interfaceUniqId] || false
     }
   },
   computed: {
     ...mapState({
+      allProxyList: state => state.proxyList,
       interfaceUniqId: state => state.interfaceUniqId,
       currentInterface: state => state.currentInterface
     }),
@@ -80,6 +84,10 @@ export default {
     // 当开启/关闭代理模式改变时
     handleEnabledChange () {
       this.handleProxyChange('enabled', this.proxyText)
+      this.$store.dispatch('setProxy', {
+        interfaceUniqId: this.interfaceUniqId,
+        enabled: this.enabled
+      })
     },
     // 点击添加代理
     handleAddClick () {

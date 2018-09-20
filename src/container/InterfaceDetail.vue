@@ -31,8 +31,11 @@
 <script>
 import { mapState } from 'vuex'
 
-import { interfaceService } from '@/api'
+import { messageWrapper } from '@/utils/message'
+import { interfaceService, sdkService } from '@/api'
 import { InterfaceConfig, SceneManage, ProxyMode, Schema } from '@/components'
+
+const { uniqId: projectUniqId } = window.context
 
 export default {
   components: {
@@ -43,18 +46,32 @@ export default {
   },
   data () {
     return {
-      enabled: false,
       projectName: window.context.projectName || ''
     }
   },
   computed: {
     ...mapState({
+      proxyList: state => state.proxyList,
+      interfaceUniqId: state => state.interfaceUniqId,
       currentInterface: state => state.currentInterface
     }),
     breadcrumb () {
       const currentMethod = this.currentInterface.method
       const currentPathname = this.currentInterface.pathname
       return currentPathname ? `${currentPathname}（${currentMethod}）` : ''
+    },
+    enabled: {
+      get () {
+        const values = Object.values(this.proxyList)
+        if (values.length) {
+          return values.every(value => value)
+        } else {
+          return false
+        }
+      },
+      set (newEnabled) {
+        this.switchAllProxy(newEnabled)
+      }
     }
   },
   methods: {
@@ -62,6 +79,20 @@ export default {
     async getOneInterface () {
       const res = await interfaceService.getOneInterface(this.currentInterface.uniqId)
       this.$store.dispatch('setCurrentInterface', res.data)
+    },
+    // 改变全局代理
+    switchAllProxy (enabled) {
+      const switchPromise = sdkService.switchAllProxy.bind(null, {
+        projectUniqId,
+        enabled
+      })
+      messageWrapper('切换全局代理', switchPromise, () => {
+        const newProxyList = {}
+        Object.keys(this.proxyList).forEach((key) => {
+          newProxyList[key] = enabled
+        })
+        this.$store.dispatch('setProxyList', newProxyList)
+      })
     }
   }
 }
