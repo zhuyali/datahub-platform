@@ -33,13 +33,20 @@ module.exports = {
     fontRule
       .use('url-loader')
       .loader('url-loader')
+    config
+      .plugin('extract-css')
+      .tap(args => {
+        args[0].filename = 'datahub-view.css'
+        args[0].chunkFilename = 'datahub-view.css'
+        return args
+      })
     config.plugins.delete('html')
     config.plugins.delete('preload')
     config.plugins.delete('prefetch')
     config.optimization.splitChunks(false)
   },
   css: {
-    extract: false
+    extract: true
   },
   configureWebpack: {
     output: {
@@ -56,7 +63,7 @@ module.exports = {
         defaultDatahub.startServer(datahubConfig).then(() => {
           console.log('datahub ready');
         });
-      },
+      }
     }
   }
 }
