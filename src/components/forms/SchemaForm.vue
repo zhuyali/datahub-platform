@@ -1,6 +1,5 @@
 <template>
   <el-dialog width="60%"
-    @open="handleDialogOpen"
     :visible.sync="selfDialogVisible">
     <div slot="title">
       编辑 Schema（详见
@@ -10,6 +9,7 @@
       ）
     </div>
     <code-mirror
+      :value="schema"
       :hasChange="hasChange"
       :visible="selfDialogVisible"
       :key="`${interfaceUniqId}-${type}`"
@@ -57,19 +57,6 @@ export default {
     interfaceUniqId: state => state.interfaceUniqId
   }),
   methods: {
-    // 对话框打开时
-    handleDialogOpen () {
-      this.$nextTick(() => {
-        const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-${this.type}-code-mirror`].codeMirrorEditor
-        const totalLines = codeMirrorEditor.lineCount()
-        codeMirrorEditor.doc.setValue(JSON.stringify(this.schema || {}))
-        codeMirrorEditor.autoFormatRange({
-          line: 0, ch: 0
-        }, {
-          line: totalLines
-        })
-      })
-    },
     // 确认编辑 schema
     confirmUpdateSchema () {
       const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-${this.type}-code-mirror`].codeMirrorEditor

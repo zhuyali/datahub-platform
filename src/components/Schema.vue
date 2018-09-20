@@ -1,11 +1,13 @@
 <template>
   <div class="g-schema">
     <schema-item
+      :from="from"
       type="request"
       :schema="reqSchema"
       @update-success="getAllSchema">
     </schema-item>
     <schema-item
+      :from="from"
       type="response"
       :schema="resSchema"
       @update-success="getAllSchema">
@@ -20,6 +22,7 @@ import { schemaService } from '@/api'
 import SchemaItem from './SchemaItem'
 
 export default {
+  props: ['from'],
   components: {
     'schema-item': SchemaItem
   },
@@ -28,13 +31,9 @@ export default {
       this.getAllSchema()
     }
   },
-  data () {
-    return {
-      schemas: []
-    }
-  },
   computed: {
     ...mapState({
+      schemas: state => state.schemas,
       interfaceUniqId: state => state.interfaceUniqId
     }),
     reqSchema () {
@@ -54,7 +53,7 @@ export default {
     // 获取所有的 schema 数据
     async getAllSchema () {
       const res = await schemaService.getAllSchema(this.interfaceUniqId)
-      this.schemas = res.data || []
+      this.$store.dispatch('setSchemas', res.data || [])
     }
   }
 }

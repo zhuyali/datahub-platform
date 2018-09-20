@@ -9,6 +9,7 @@
       </el-form-item>
       <el-form-item label="场景数据：" label-width="120px" prop="data">
         <code-mirror
+          :value="this.form.data"
           :hasChange="hasChange"
           :visible="selfDialogVisible"
           :key="`${interfaceUniqId}-scene`"
@@ -38,7 +39,7 @@ export default {
     'code-mirror': CodeMirror
   },
   watch: {
-    interfaceUniqId (newVal, oldVal) {
+    interfaceUniqId () {
       this.hasChange = true
     },
     dialogVisible () {
@@ -74,26 +75,16 @@ export default {
   methods: {
     // 打开对话框时
     handleDialogOpen () {
-      this.$nextTick(() => {
-        this.form.data = this.dialogData.data || {}
-        this.form.uniqId = this.dialogData.uniqId || ''
-        this.form.sceneName = this.dialogData.sceneName || ''
-        this.form.interfaceUniqId = this.interfaceUniqId || ''
-        const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-scene-code-mirror`].codeMirrorEditor
-        const totalLines = codeMirrorEditor.lineCount()
-        codeMirrorEditor.doc.setValue(JSON.stringify(this.form.data))
-        codeMirrorEditor.autoFormatRange({
-          line: 0, ch: 0
-        }, {
-          line: totalLines
-        })
-      })
+      this.form.data = this.dialogData.data || {}
+      this.form.uniqId = this.dialogData.uniqId || ''
+      this.form.sceneName = this.dialogData.sceneName || ''
+      this.form.interfaceUniqId = this.interfaceUniqId || ''
     },
     // 确认添加或更新场景
     confirmAddOrUpdateScene () {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
-          const codeMirrorEditor = this.$refs['code-mirror'].codeMirrorEditor
+          const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-scene-code-mirror`].codeMirrorEditor
           const { data, error } = validateJSON(codeMirrorEditor.doc.getValue())
           if (error) {
             this.$message.error('JSON 格式错误，请检查后提交')

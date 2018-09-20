@@ -23,7 +23,7 @@
       <interface-config @update-success="getOneInterface"></interface-config>
       <scene-manage @update-success="getOneInterface"></scene-manage>
       <proxy-mode @update-success="getOneInterface"></proxy-mode>
-      <schema></schema>
+      <schema from="detail"></schema>
     </div>
   </div>
 </template>

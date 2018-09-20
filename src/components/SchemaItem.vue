@@ -2,7 +2,7 @@
   <div class="g-schema-item">
     <div class="m-header">
       <h2 class="black u-headertext">{{ isRequest ? '请求' : '响应' }}字段描述</h2>
-      <div class="m-btngroup">
+      <div class="m-btngroup" v-show="from === 'detail'">
         <el-button type="primary" size="mini" @click="handleAddClick">新建</el-button>
         <el-button type="primary" size="mini" @click="handleEditClick">编辑</el-button>
       </div>
@@ -41,7 +41,7 @@ import SchemaForm from './forms/SchemaForm'
 import { genSchemaList } from '@/utils/helper'
 
 export default {
-  props: ['type', 'schema'],
+  props: ['type', 'schema', 'from'],
   components: {
     'schema-form': SchemaForm
   },

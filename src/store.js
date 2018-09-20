@@ -5,12 +5,20 @@ Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
+    scenes: [],
+    schemas: [],
     proxyList: {},
     interfaceUniqId: '',
     currentInterface: {},
     activeName: 'interface-detail'
   },
   mutations: {
+    setScenes (state, scenes) {
+      state.scenes = scenes
+    },
+    setSchemas (state, schemas) {
+      state.schemas = schemas
+    },
     setActiveName (state, activeName) {
       state.activeName = activeName
     },
@@ -28,6 +36,12 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setScenes ({ commit }, scenes) {
+      commit('setScenes', scenes)
+    },
+    setSchemas ({ commit }, schemas) {
+      commit('setSchemas', schemas)
+    },
     setActiveName ({ commit }, activeName) {
       commit('setActiveName', activeName)
     },

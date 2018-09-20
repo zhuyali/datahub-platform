@@ -49,7 +49,6 @@ export default {
   },
   data () {
     return {
-      scenes: [],
       dialogData: {},
       currentScene: '',
       dialogType: 'add',
@@ -58,6 +57,7 @@ export default {
   },
   computed: {
     ...mapState({
+      scenes: state => state.scenes,
       interfaceUniqId: state => state.interfaceUniqId,
       currentInterface: state => state.currentInterface
     }),
@@ -105,7 +105,7 @@ export default {
     // 获取所有的场景数据
     async getAllScene () {
       const res = await sceneService.getAllScene(this.interfaceUniqId)
-      this.scenes = res.data || []
+      this.$store.dispatch('setScenes', res.data || [])
     }
   }
 }

@@ -11,6 +11,8 @@
       </div>
     </div>
     <div class="g-doc-content">
+      <schema from="doc"></schema>
+      <scene-data :key="interfaceUniqId"></scene-data>
     </div>
   </div>
 </template>
@@ -18,7 +20,13 @@
 <script>
 import { mapState } from 'vuex'
 
+import { Schema, SceneData } from '@/components'
+
 export default {
+  components: {
+    'schema': Schema,
+    'scene-data': SceneData
+  },
   data () {
     return {
       projectName: window.context.projectName || ''
@@ -26,6 +34,7 @@ export default {
   },
   computed: {
     ...mapState({
+      interfaceUniqId: state => state.interfaceUniqId,
       currentInterface: state => state.currentInterface
     }),
     breadcrumb () {

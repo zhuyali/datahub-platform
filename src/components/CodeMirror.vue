@@ -27,10 +27,12 @@ import '@/assets/javascript/format'
 import '@/assets/javascript/jsonlint'
 
 export default {
-  props: ['selfKey', 'visible', 'hasChange'],
+  props: ['selfKey', 'visible', 'hasChange', 'value'],
   watch: {
     visible () {
-      this.codeMirrorEditor.toTextArea()
+      if (this.codeMirrorEditor) {
+        this.codeMirrorEditor.toTextArea()
+      }
       this.init()
     }
   },
@@ -47,27 +49,36 @@ export default {
   methods: {
     init () {
       const codeElement = document.getElementById(this.selfKey)
-      this.codeMirrorEditor = CodeMirror.fromTextArea(codeElement, {
-        mode: {
-          name: 'javascript',
-          json: true
-        },
-        lint: true,
-        tabSize: 2,
-        foldGutter: true,
-        lineNumbers: true,
-        smartIndent: true,
-        matchBrackets: true,
-        styleActiveLine: true,
-        autoCloseBrackets: true,
-        gutters: [
-          'CodeMirror-linenumbers',
-          'CodeMirror-foldgutter',
-          'CodeMirror-activeline-gutter',
-          'CodeMirror-lint-markers'
-        ],
-        placeholder: '{\n  ... Input JSON data here\n}'
-      })
+      if (codeElement) {
+        this.codeMirrorEditor = CodeMirror.fromTextArea(codeElement, {
+          mode: {
+            name: 'javascript',
+            json: true
+          },
+          lint: true,
+          tabSize: 2,
+          foldGutter: true,
+          lineNumbers: true,
+          smartIndent: true,
+          matchBrackets: true,
+          styleActiveLine: true,
+          autoCloseBrackets: true,
+          gutters: [
+            'CodeMirror-linenumbers',
+            'CodeMirror-foldgutter',
+            'CodeMirror-activeline-gutter',
+            'CodeMirror-lint-markers'
+          ],
+          placeholder: '{\n  ... Input JSON data here\n}'
+        })
+        const totalLines = this.codeMirrorEditor.lineCount()
+        this.codeMirrorEditor.doc.setValue(JSON.stringify(this.value || {}))
+        this.codeMirrorEditor.autoFormatRange({
+          line: 0, ch: 0
+        }, {
+          line: totalLines
+        })
+      }
     }
   }
 }
