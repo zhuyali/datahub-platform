@@ -9,27 +9,38 @@
       </el-tabs>
     </div>
     <div class="g-main">
-      <component :is="currentTabComponent"></component>
+      <keep-alive>
+        <component :is="currentTabComponent"></component>
+      </keep-alive>
     </div>
   </div>
 </template>
 
 <script>
-import { InterfaceList, InterfaceDetail } from '@/container'
+import { mapState } from 'vuex'
+
+import {
+  InterfaceList, InterfaceDetail, InterfaceDoc
+} from '@/container'
 
 export default {
   components: {
+    'interface-doc': InterfaceDoc,
     'interface-list': InterfaceList,
     'interface-detail': InterfaceDetail
   },
-  data () {
-    return {
-      activeName: 'interface'
-    }
-  },
   computed: {
+    ...mapState({
+      currentActiveName: state => state.activeName
+    }),
+    activeName: {
+      get () {
+        return this.currentActiveName.split('-')[0]
+      },
+      set () {}
+    },
     currentTabComponent () {
-      return this.activeName === 'interface' ? 'interface-detail' : ''
+      return this.currentActiveName
     }
   }
 }

@@ -16,7 +16,7 @@
           </el-switch>
           开启全局代理
         </div>
-        <el-button type="primary" size="mini">接口文档</el-button>
+        <el-button type="primary" size="mini" @click="handleDocClick">接口文档</el-button>
       </div>
     </div>
     <div class="g-interface-content">
@@ -80,6 +80,10 @@ export default {
       const res = await interfaceService.getOneInterface(this.currentInterface.uniqId)
       this.$store.dispatch('setCurrentInterface', res.data)
     },
+    // 查看接口文档
+    handleDocClick () {
+      this.$store.dispatch('setActiveName', 'interface-doc')
+    },
     // 改变全局代理
     switchAllProxy (enabled) {
       const switchPromise = sdkService.switchAllProxy.bind(null, {
@@ -114,6 +118,8 @@ export default {
         margin-right: 5px;
         line-height: 28px;
         vertical-align: -1px;
+        font-size: 12px;
+        font-weight: 500;
         background-color: #409EFF;
         border-color: #409EFF;
         border-radius: 3px;

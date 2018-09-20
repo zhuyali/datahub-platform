@@ -7,9 +7,13 @@ export default new Vuex.Store({
   state: {
     proxyList: {},
     interfaceUniqId: '',
-    currentInterface: {}
+    currentInterface: {},
+    activeName: 'interface-detail'
   },
   mutations: {
+    setActiveName (state, activeName) {
+      state.activeName = activeName
+    },
     setProxy (state, { interfaceUniqId, enabled }) {
       state.proxyList[interfaceUniqId] = enabled
     },
@@ -24,6 +28,9 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    setActiveName ({ commit }, activeName) {
+      commit('setActiveName', activeName)
+    },
     setProxy ({ commit }, { interfaceUniqId, enabled }) {
       commit('setProxy', { interfaceUniqId, enabled })
     },
