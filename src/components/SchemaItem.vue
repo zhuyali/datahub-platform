@@ -37,41 +37,41 @@
 </template>
 
 <script>
-import SchemaForm from './forms/SchemaForm';
-import { genSchemaList } from '@/utils/helper';
+import SchemaForm from './forms/SchemaForm'
+import { genSchemaList } from '@/utils/helper'
 
 export default {
   props: ['type', 'schema'],
   components: {
     'schema-form': SchemaForm
   },
-  data() {
+  data () {
     return {
       schemaData: {},
       dialogVisible: false
     }
   },
   computed: {
-    isRequest() {
-      return this.type === 'request';
+    isRequest () {
+      return this.type === 'request'
     },
-    tableData() {
+    tableData () {
       try {
-        return genSchemaList(this.schema || {});
-      } catch(e) {
-        return [];
-      } 
+        return genSchemaList(this.schema || {})
+      } catch (e) {
+        return []
+      }
     }
   },
   methods: {
     // 新建一项 schema
-    handleAddClick() {
+    handleAddClick () {
 
     },
     // 编辑 JSON schema
-    handleEditClick() {
-      this.dialogVisible = true;
-    },
+    handleEditClick () {
+      this.dialogVisible = true
+    }
   }
 }
 </script>

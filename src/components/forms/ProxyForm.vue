@@ -1,6 +1,6 @@
 <template>
-  <el-dialog 
-    title="添加代理" 
+  <el-dialog
+    title="添加代理"
     width="500px" center
     :visible.sync="selfDialogVisible">
     <el-form :model="form" :rules="rules" ref="ruleForm">
@@ -16,22 +16,22 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
-import { interfaceService } from '@/api';
-import { messageWrapper } from '@/utils/message';
+import { interfaceService } from '@/api'
+import { messageWrapper } from '@/utils/message'
 
 export default {
   props: ['dialogVisible', 'proxyConfig'],
   watch: {
-    dialogVisible() {
-      this.selfDialogVisible = this.dialogVisible;
+    dialogVisible () {
+      this.selfDialogVisible = this.dialogVisible
     },
-    selfDialogVisible() {
-      this.$emit('update:dialogVisible', this.selfDialogVisible);
+    selfDialogVisible () {
+      this.$emit('update:dialogVisible', this.selfDialogVisible)
     }
   },
-  data() {
+  data () {
     return {
       selfDialogVisible: false,
       form: {
@@ -46,15 +46,15 @@ export default {
   },
   computed: {
     ...mapState({
-      interfaceUniqId: state => state.interfaceUniqId,
+      interfaceUniqId: state => state.interfaceUniqId
     }),
-    newProxyList() {
-      return this.proxyConfig.proxyList.concat(this.form);
+    newProxyList () {
+      return this.proxyConfig.proxyList.concat(this.form)
     }
   },
   methods: {
     // 确认添加代理
-    confirmAddProxy() {
+    confirmAddProxy () {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           if (/^https?:\/\/.+$/.test(this.form.proxyUrl)) {
@@ -64,18 +64,18 @@ export default {
                 ...this.proxyConfig,
                 proxyList: this.newProxyList
               }
-            });
+            })
             messageWrapper('新增', addPromise, () => {
-              this.$emit('add-success');
-              this.selfDialogVisible = false;
-            });
+              this.$emit('add-success')
+              this.selfDialogVisible = false
+            })
           } else {
-            this.$message.error('URL 格式错误，请检查后提交');
+            this.$message.error('URL 格式错误，请检查后提交')
           }
         } else {
-            return false;
+          return false
         }
-      });
+      })
     }
   }
 }

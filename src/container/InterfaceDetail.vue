@@ -8,7 +8,7 @@
       </el-breadcrumb>
       <div class="m-btngroup">
         <div class="u-switch" type="primary" size="mini">
-          <el-switch 
+          <el-switch
             v-model="enabled"
             active-color="#13ce66"
             :active-value="true"
@@ -29,10 +29,10 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
-import { interfaceService } from '@/api';
-import { InterfaceConfig, SceneManage, ProxyMode, Schema } from '@/components';
+import { interfaceService } from '@/api'
+import { InterfaceConfig, SceneManage, ProxyMode, Schema } from '@/components'
 
 export default {
   components: {
@@ -41,7 +41,7 @@ export default {
     'scene-manage': SceneManage,
     'interface-config': InterfaceConfig
   },
-  data() {
+  data () {
     return {
       enabled: false,
       projectName: window.context.projectName || ''
@@ -51,17 +51,17 @@ export default {
     ...mapState({
       currentInterface: state => state.currentInterface
     }),
-    breadcrumb() {
-      const currentMethod = this.currentInterface.method;
-      const currentPathname = this.currentInterface.pathname;
-      return currentPathname ? `${currentPathname}（${currentMethod}）` : '';
+    breadcrumb () {
+      const currentMethod = this.currentInterface.method
+      const currentPathname = this.currentInterface.pathname
+      return currentPathname ? `${currentPathname}（${currentMethod}）` : ''
     }
   },
   methods: {
     // 获取当前接口的详细信息
-    async getOneInterface() {
-      const res = await interfaceService.getOneInterface(this.currentInterface.uniqId);
-      this.$store.dispatch('setCurrentInterface', res.data);
+    async getOneInterface () {
+      const res = await interfaceService.getOneInterface(this.currentInterface.uniqId)
+      this.$store.dispatch('setCurrentInterface', res.data)
     }
   }
 }

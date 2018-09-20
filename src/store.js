@@ -1,7 +1,7 @@
-import Vue from 'vue';
-import Vuex from 'vuex';
+import Vue from 'vue'
+import Vuex from 'vuex'
 
-Vue.use(Vuex);
+Vue.use(Vuex)
 
 export default new Vuex.Store({
   state: {
@@ -9,19 +9,19 @@ export default new Vuex.Store({
     currentInterface: {}
   },
   mutations: {
-    setInterfaceUniqId(state, interfaceUniqId) {
-      state.interfaceUniqId = interfaceUniqId;
+    setInterfaceUniqId (state, interfaceUniqId) {
+      state.interfaceUniqId = interfaceUniqId
     },
-    setCurrentInterface(state, currentInterface) {
-      state.currentInterface = currentInterface;
+    setCurrentInterface (state, currentInterface) {
+      state.currentInterface = currentInterface
     }
   },
   actions: {
-    setInterfaceUniqId({ commit }, interfaceUniqId) {
-      commit('setInterfaceUniqId', interfaceUniqId);
+    setInterfaceUniqId ({ commit }, interfaceUniqId) {
+      commit('setInterfaceUniqId', interfaceUniqId)
     },
-    setCurrentInterface({ commit }, currentInterface) {
-      commit('setCurrentInterface', currentInterface);
+    setCurrentInterface ({ commit }, currentInterface) {
+      commit('setCurrentInterface', currentInterface)
     }
   }
-});
+})

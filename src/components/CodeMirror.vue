@@ -2,53 +2,51 @@
   <el-input
     :key="selfKey"
     class="u-textarea"
-    type="textarea" 
-    :rows="10" 
+    type="textarea"
+    :rows="10"
     :id="selfKey">
   </el-input>
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import 'codemirror/addon/lint/lint'
+import 'codemirror/lib/codemirror.css'
+import 'codemirror/addon/lint/lint.css'
+import 'codemirror/addon/lint/json-lint'
+import 'codemirror/addon/fold/foldgutter'
+import 'codemirror/addon/fold/brace-fold'
+import 'codemirror/addon/edit/matchbrackets'
+import 'codemirror/addon/edit/closebrackets'
+import 'codemirror/addon/fold/foldgutter.css'
+import 'codemirror/addon/display/placeholder'
+import 'codemirror/mode/javascript/javascript'
+import 'codemirror/addon/selection/active-line'
+import * as CodeMirror from 'codemirror/lib/codemirror'
 
-import 'codemirror/addon/lint/lint';
-import 'codemirror/lib/codemirror.css';
-import 'codemirror/addon/lint/lint.css';
-import 'codemirror/addon/lint/json-lint';
-import 'codemirror/addon/fold/foldgutter';
-import 'codemirror/addon/fold/brace-fold';
-import 'codemirror/addon/edit/matchbrackets';
-import 'codemirror/addon/edit/closebrackets';
-import 'codemirror/addon/fold/foldgutter.css';
-import 'codemirror/addon/display/placeholder';
-import 'codemirror/mode/javascript/javascript';
-import 'codemirror/addon/selection/active-line';
-import * as CodeMirror from 'codemirror/lib/codemirror';
-
-import '@/assets/javascript/format';
-import '@/assets/javascript/jsonlint';
+import '@/assets/javascript/format'
+import '@/assets/javascript/jsonlint'
 
 export default {
   props: ['selfKey', 'visible', 'hasChange'],
   watch: {
-    visible() {
-      this.codeMirrorEditor.toTextArea();
-      this.init();
+    visible () {
+      this.codeMirrorEditor.toTextArea()
+      this.init()
     }
   },
-  data() {
+  data () {
     return {
       codeMirrorEditor: null
     }
   },
-  mounted() {
+  mounted () {
     if (this.hasChange) {
-      this.init();
+      this.init()
     }
   },
   methods: {
-    init() {
-      const codeElement = document.getElementById(this.selfKey);
+    init () {
+      const codeElement = document.getElementById(this.selfKey)
       this.codeMirrorEditor = CodeMirror.fromTextArea(codeElement, {
         mode: {
           name: 'javascript',
@@ -69,7 +67,7 @@ export default {
           'CodeMirror-lint-markers'
         ],
         placeholder: '{\n  ... Input JSON data here\n}'
-      });
+      })
     }
   }
 }

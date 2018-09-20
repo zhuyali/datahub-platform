@@ -36,34 +36,34 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
-import { interfaceService } from '@/api';
-import ProxyForm from './forms/ProxyForm';
-import { messageWrapper, confirmWrapper } from '@/utils/message';
+import { interfaceService } from '@/api'
+import ProxyForm from './forms/ProxyForm'
+import { messageWrapper, confirmWrapper } from '@/utils/message'
 
 export default {
   components: {
     'proxy-form': ProxyForm
   },
-  data() {
+  data () {
     return {
       enabled: false,
       proxyConfig: {},
       activeIndex: 0,
       proxyList: [],
       dialogVisible: false
-    };
+    }
   },
   watch: {
-    currentInterface() {
+    currentInterface () {
       this.proxyConfig = {
         proxyList: [],
         enabled: false,
         activeIndex: 0,
-        ...this.currentInterface.proxyConfig 
+        ...this.currentInterface.proxyConfig
       }
-      this.enabled = this.proxyConfig.enabled;
+      this.enabled = this.proxyConfig.enabled
       this.activeIndex = this.proxyConfig.activeIndex
     }
   },
@@ -72,40 +72,40 @@ export default {
       interfaceUniqId: state => state.interfaceUniqId,
       currentInterface: state => state.currentInterface
     }),
-    proxyText() {
-      return `${this.enabled ? '开启' : '关闭'}代理模式`;
+    proxyText () {
+      return `${this.enabled ? '开启' : '关闭'}代理模式`
     }
   },
   methods: {
     // 当开启/关闭代理模式改变时
-    handleEnabledChange() {
-      this.handleProxyChange('enabled', this.proxyText);
+    handleEnabledChange () {
+      this.handleProxyChange('enabled', this.proxyText)
     },
     // 点击添加代理
-    handleAddClick() {
-      this.dialogVisible = true;
+    handleAddClick () {
+      this.dialogVisible = true
     },
     // 选择的代理变化
-    handleRadioChange() {
-      this.handleProxyChange('activeIndex', '切换代理');
+    handleRadioChange () {
+      this.handleProxyChange('activeIndex', '切换代理')
     },
     // 删除代理
-    handleDeleteClick(index) {
-      this.proxyList = this.proxyConfig.proxyList.filter((proxy, i) => i !== index);
-      confirmWrapper('删除代理', this.handleProxyChange.bind(this, 'proxyList', '删除代理'));
+    handleDeleteClick (index) {
+      this.proxyList = this.proxyConfig.proxyList.filter((proxy, i) => i !== index)
+      confirmWrapper('删除代理', this.handleProxyChange.bind(this, 'proxyList', '删除代理'))
     },
     // 代理有所变化时
-    handleProxyChange(itemName, message) {
+    handleProxyChange (itemName, message) {
       const updatePromise = interfaceService.updateInterface.bind(null, {
         uniqId: this.interfaceUniqId,
         proxyConfig: {
           ...this.proxyConfig,
           [itemName]: this[itemName]
         }
-      });
+      })
       messageWrapper(message, updatePromise, () => {
-        this.$emit('update-success');
-      });
+        this.$emit('update-success')
+      })
     }
   }
 }

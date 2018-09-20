@@ -15,21 +15,21 @@
 </template>
 
 <script>
-import { InterfaceList, InterfaceDetail } from '@/container';
+import { InterfaceList, InterfaceDetail } from '@/container'
 
 export default {
   components: {
     'interface-list': InterfaceList,
     'interface-detail': InterfaceDetail
   },
-  data() {
+  data () {
     return {
       activeName: 'interface'
-    };
+    }
   },
   computed: {
-    currentTabComponent() {
-      return this.activeName === 'interface' ? 'interface-detail' : '';
+    currentTabComponent () {
+      return this.activeName === 'interface' ? 'interface-detail' : ''
     }
   }
 }

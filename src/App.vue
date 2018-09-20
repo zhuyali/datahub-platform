@@ -16,14 +16,14 @@
 <script>
 export default {
   name: 'app',
-  created() {
-      
+  created () {
+
   },
-  data() {
+  data () {
     return {
 
-    };
-  },
+    }
+  }
 }
 </script>
 

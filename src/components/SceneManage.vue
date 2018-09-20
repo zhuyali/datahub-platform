@@ -20,7 +20,7 @@
     </div>
 
     <scene-form
-      :dialogType="dialogType" 
+      :dialogType="dialogType"
       :dialogData="dialogData"
       :dialogVisible.sync="dialogVisible"
       @add-or-update-success="handleSceneChange">
@@ -29,27 +29,25 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
-import SceneForm from './forms/SceneForm';
-import { sceneService, interfaceService } from '@/api';
-import { confirmWrapper, messageWrapper } from '@/utils/message';
-
-const projectName = window.context.projectName;
+import SceneForm from './forms/SceneForm'
+import { sceneService, interfaceService } from '@/api'
+import { confirmWrapper, messageWrapper } from '@/utils/message'
 
 export default {
   components: {
     'scene-form': SceneForm
   },
   watch: {
-    interfaceUniqId() {
-      this.getAllScene();
+    interfaceUniqId () {
+      this.getAllScene()
     },
-    currentInterface() {
-      this.currentScene = this.currentInterface.currentScene || '';
+    currentInterface () {
+      this.currentScene = this.currentInterface.currentScene || ''
     }
   },
-  data() {
+  data () {
     return {
       scenes: [],
       dialogData: {},
@@ -63,51 +61,51 @@ export default {
       interfaceUniqId: state => state.interfaceUniqId,
       currentInterface: state => state.currentInterface
     }),
-    previewLink() {
-      return `//${location.host}/api/preview/scene?interfaceUniqId=${this.interfaceUniqId}&sceneName=`;
+    previewLink () {
+      return `//${location.host}/api/preview/scene?interfaceUniqId=${this.interfaceUniqId}&sceneName=`
     }
   },
   methods: {
     // 点击添加场景按钮
-    handleAddClick() {
-      this.dialogData = {};
-      this.dialogType = 'add';
-      this.dialogVisible = true;
+    handleAddClick () {
+      this.dialogData = {}
+      this.dialogType = 'add'
+      this.dialogVisible = true
     },
     // 点击编辑场景
-    handleEditClick({ sceneName, data, uniqId }) {
-      this.dialogType = 'edit';
-      this.dialogVisible = true;
-      this.dialogData.data = data;
-      this.dialogData.uniqId = uniqId;
-      this.dialogData.sceneName = sceneName;
+    handleEditClick ({ sceneName, data, uniqId }) {
+      this.dialogType = 'edit'
+      this.dialogVisible = true
+      this.dialogData.data = data
+      this.dialogData.uniqId = uniqId
+      this.dialogData.sceneName = sceneName
     },
     // 点击删除场景
-    handleDeleteClick(uniqId) {
-      const deletePromise = sceneService.deleteScene.bind(null, uniqId);
+    handleDeleteClick (uniqId) {
+      const deletePromise = sceneService.deleteScene.bind(null, uniqId)
       confirmWrapper('删除场景', deletePromise, () => {
-        this.handleSceneChange();
-      });
+        this.handleSceneChange()
+      })
     },
     // 选择的场景变化
-    handleRadioChange() {
+    handleRadioChange () {
       const updatePromise = interfaceService.updateInterface.bind(null, {
         uniqId: this.interfaceUniqId,
         currentScene: this.currentScene
-      });
+      })
       messageWrapper('切换场景', updatePromise, () => {
-        this.$emit('update-success');
-      });
+        this.$emit('update-success')
+      })
     },
     // 场景有所变化时
-    handleSceneChange() {
-      this.getAllScene();
-      this.$emit('update-success');
+    handleSceneChange () {
+      this.getAllScene()
+      this.$emit('update-success')
     },
     // 获取所有的场景数据
-    async getAllScene() {
-      const res = await sceneService.getAllScene(this.interfaceUniqId);
-      this.scenes = res.data || [];
+    async getAllScene () {
+      const res = await sceneService.getAllScene(this.interfaceUniqId)
+      this.scenes = res.data || []
     }
   }
 }

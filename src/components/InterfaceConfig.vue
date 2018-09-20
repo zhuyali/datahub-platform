@@ -29,60 +29,60 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
-import ContextConfigForm from './forms/ContextConfigForm';
+import ContextConfigForm from './forms/ContextConfigForm'
 
 export default {
   components: {
     'context-config-form': ContextConfigForm
   },
   watch: {
-    currentInterface() {
+    currentInterface () {
       if (this.currentInterface.contextConfig) {
-        const contextConfig = this.currentInterface.contextConfig;
-        this.responseDelay = contextConfig.responseDelay || 0;
-        this.responseStatus = contextConfig.responseStatus || 200;
-        this.responseHeaders = contextConfig.responseHeaders || {};
+        const contextConfig = this.currentInterface.contextConfig
+        this.responseDelay = contextConfig.responseDelay || 0
+        this.responseStatus = contextConfig.responseStatus || 200
+        this.responseHeaders = contextConfig.responseHeaders || {}
       }
     }
   },
-  data() {
+  data () {
     return {
       dialogData: {},
       responseDelay: 0,
       responseStatus: 200,
       responseHeaders: {},
       dialogVisible: false,
-      supportMethod: ['ALL', 'GET', 'POST', 'PUT', 'DELETE'],
+      supportMethod: ['ALL', 'GET', 'POST', 'PUT', 'DELETE']
     }
   },
   computed: {
     ...mapState({
       currentInterface: state => state.currentInterface
     }),
-    tableData() {
-      const result = [];
-      const contextConfig = this.currentInterface.contextConfig;
+    tableData () {
+      const result = []
+      const contextConfig = this.currentInterface.contextConfig
       if (contextConfig && contextConfig.responseHeaders) {
-        const responseHeaders = contextConfig.responseHeaders;
+        const responseHeaders = contextConfig.responseHeaders
         Object.keys(responseHeaders).forEach((key) => {
           result.push({
             key,
             value: responseHeaders[key]
-          });
-        });
+          })
+        })
       }
-      return result;
+      return result
     }
   },
   methods: {
     // 点击修改接口配置
-    handleConfigEditClick() {
-      this.dialogVisible = true;
-      this.dialogData.responseDelay = this.responseDelay;
-      this.dialogData.responseStatus = this.responseStatus;
-      this.dialogData.responseHeaders = this.responseHeaders;
+    handleConfigEditClick () {
+      this.dialogVisible = true
+      this.dialogData.responseDelay = this.responseDelay
+      this.dialogData.responseStatus = this.responseStatus
+      this.dialogData.responseHeaders = this.responseHeaders
     }
   }
 }

@@ -13,7 +13,7 @@
       :hasChange="hasChange"
       :visible="selfDialogVisible"
       :key="`${interfaceUniqId}-${type}`"
-      :ref="`${interfaceUniqId}-${type}-code-mirror`" 
+      :ref="`${interfaceUniqId}-${type}-code-mirror`"
       :selfKey="`${interfaceUniqId}-${type}-code-mirror`">
     </code-mirror>
     <div slot="footer" class="dialog-footer">
@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
-import { schemaService } from '@/api';
-import CodeMirror from '../CodeMirror';
-import { validateJSON } from '@/utils/helper';
-import { messageWrapper } from '@/utils/message';
+import { schemaService } from '@/api'
+import CodeMirror from '../CodeMirror'
+import { validateJSON } from '@/utils/helper'
+import { messageWrapper } from '@/utils/message'
 
 export default {
   props: ['dialogVisible', 'schema', 'type'],
@@ -37,17 +37,17 @@ export default {
     'code-mirror': CodeMirror
   },
   watch: {
-    interfaceUniqId(newVal, oldVal) {
-      this.hasChange = oldVal ? true : true;
+    interfaceUniqId (newVal, oldVal) {
+      this.hasChange = true
     },
-    dialogVisible() {
-      this.selfDialogVisible = this.dialogVisible;
+    dialogVisible () {
+      this.selfDialogVisible = this.dialogVisible
     },
-    selfDialogVisible() {
-      this.$emit('update:dialogVisible', this.selfDialogVisible);
+    selfDialogVisible () {
+      this.$emit('update:dialogVisible', this.selfDialogVisible)
     }
   },
-  data() {
+  data () {
     return {
       hasChange: false,
       selfDialogVisible: false
@@ -58,34 +58,34 @@ export default {
   }),
   methods: {
     // 对话框打开时
-    handleDialogOpen() {
+    handleDialogOpen () {
       this.$nextTick(() => {
-        const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-${this.type}-code-mirror`].codeMirrorEditor;
-        const totalLines = codeMirrorEditor.lineCount();
-        codeMirrorEditor.doc.setValue(JSON.stringify(this.schema || {}));
+        const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-${this.type}-code-mirror`].codeMirrorEditor
+        const totalLines = codeMirrorEditor.lineCount()
+        codeMirrorEditor.doc.setValue(JSON.stringify(this.schema || {}))
         codeMirrorEditor.autoFormatRange({
           line: 0, ch: 0
         }, {
           line: totalLines
-        });
-      });
+        })
+      })
     },
     // 确认编辑 schema
-    confirmUpdateSchema() {
-      const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-${this.type}-code-mirror`].codeMirrorEditor;
-      const { data, error } = validateJSON(codeMirrorEditor.doc.getValue());
+    confirmUpdateSchema () {
+      const codeMirrorEditor = this.$refs[`${this.interfaceUniqId}-${this.type}-code-mirror`].codeMirrorEditor
+      const { data, error } = validateJSON(codeMirrorEditor.doc.getValue())
       if (error) {
-        this.$message.error('JSON 格式错误，请检查后提交');
+        this.$message.error('JSON 格式错误，请检查后提交')
       } else {
         const updatePromise = schemaService.updateSchema.bind(null, {
           type: this.type,
           schemaData: data,
           interfaceUniqId: this.interfaceUniqId
-        });
+        })
         messageWrapper('更新 schema', updatePromise, () => {
-          this.$emit('update-success');
-          this.selfDialogVisible = false;
-        });
+          this.$emit('update-success')
+          this.selfDialogVisible = false
+        })
       }
     }
   }

@@ -40,8 +40,8 @@
       </div>
     </el-card>
 
-    <project-form 
-      :dialogType="dialogType" 
+    <project-form
+      :dialogType="dialogType"
       :dialogData="dialogData"
       :dialogVisible.sync="dialogVisible"
       @add-or-update-success="getAllProject">
@@ -50,54 +50,54 @@
 </template>
 
 <script>
-import { projectService } from '@/api';
-import { ProjectForm } from '@/components';
-import { confirmWrapper } from '@/utils/message';
+import { projectService } from '@/api'
+import { ProjectForm } from '@/components'
+import { confirmWrapper } from '@/utils/message'
 
 export default {
   name: 'home',
   components: {
     'project-form': ProjectForm
   },
-  data() {
+  data () {
     return {
       projects: [],
       dialogData: {},
       dialogType: 'add',
-      dialogVisible: false,
+      dialogVisible: false
     }
   },
-  created() {
-    this.getAllProject();
+  created () {
+    this.getAllProject()
   },
   methods: {
     // 添加项目点击时
-    handleAddClick() {
-      this.dialogData = {};
-      this.dialogType = 'add';
-      this.dialogVisible = true;
+    handleAddClick () {
+      this.dialogData = {}
+      this.dialogType = 'add'
+      this.dialogVisible = true
     },
     // 删除项目点击时
-    handleDeleteClick(uniqId) {
-      const deletePromise = projectService.deleteProject.bind(null, uniqId);
+    handleDeleteClick (uniqId) {
+      const deletePromise = projectService.deleteProject.bind(null, uniqId)
       confirmWrapper('删除', deletePromise, () => {
-        this.getAllProject();
-      });
+        this.getAllProject()
+      })
     },
     // 更新项目点击时
-    handleUpdateClick(project) {
+    handleUpdateClick (project) {
       this.dialogData = {
         uniqId: project.uniqId,
         projectName: project.projectName,
         description: project.description
-      };
-      this.dialogVisible = true;
-      this.dialogType = 'update';
+      }
+      this.dialogVisible = true
+      this.dialogType = 'update'
     },
     // 获取项目列表
-    async getAllProject() {
-      const res = await projectService.getAllProject();
-      this.projects = res.data || [];
+    async getAllProject () {
+      const res = await projectService.getAllProject()
+      this.projects = res.data || []
     }
   }
 }

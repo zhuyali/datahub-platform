@@ -1,7 +1,7 @@
 <template>
-  <el-dialog 
-    :title="dialogType === 'add' ? '添加新接口' : '编辑接口'" 
-    width="500px" center 
+  <el-dialog
+    :title="dialogType === 'add' ? '添加新接口' : '编辑接口'"
+    width="500px" center
     @open="handleDialogOpen"
     @close="handleDialogClose"
     :visible.sync="selfDialogVisible">
@@ -26,20 +26,20 @@
 </template>
 
 <script>
-import { interfaceService } from '@/api';
-import { messageWrapper } from '@/utils/message';
+import { interfaceService } from '@/api'
+import { messageWrapper } from '@/utils/message'
 
 export default {
   props: ['dialogVisible', 'dialogType', 'dialogData'],
   watch: {
-    dialogVisible() {
-      this.selfDialogVisible = this.dialogVisible;
+    dialogVisible () {
+      this.selfDialogVisible = this.dialogVisible
     },
-    selfDialogVisible() {
-      this.$emit('update:dialogVisible', this.selfDialogVisible);
+    selfDialogVisible () {
+      this.$emit('update:dialogVisible', this.selfDialogVisible)
     }
   },
-  data() {
+  data () {
     return {
       selfDialogVisible: this.dialogVisible,
       supportMethod: ['ALL', 'GET', 'POST', 'PUT', 'DELETE'],
@@ -51,7 +51,7 @@ export default {
       },
       rules: {
         method: [
-            { required: true, message: '请选择请求方式', trigger: 'change' }
+          { required: true, message: '请选择请求方式', trigger: 'change' }
         ],
         pathname: [
           { required: true, message: '请输入接口URL', trigger: 'blur' }
@@ -64,37 +64,37 @@ export default {
   },
   methods: {
     // 确认添加或更新接口
-    confirmAddOrUpdateInterface() {
+    confirmAddOrUpdateInterface () {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
           if (this.dialogType === 'add') {
-            const addPromise = interfaceService.addInterface.bind(null, this.form);
+            const addPromise = interfaceService.addInterface.bind(null, this.form)
             messageWrapper('新增', addPromise, () => {
-              this.$emit('add-or-update-success');
-              this.selfDialogVisible = false;
-            });
+              this.$emit('add-or-update-success')
+              this.selfDialogVisible = false
+            })
           } else {
-            const updatePromise = interfaceService.updateInterface.bind(null, this.form);
+            const updatePromise = interfaceService.updateInterface.bind(null, this.form)
             messageWrapper('更新', updatePromise, () => {
-              this.$emit('add-or-update-success');
-              this.selfDialogVisible = false;
-            });
+              this.$emit('add-or-update-success')
+              this.selfDialogVisible = false
+            })
           }
         } else {
-            return false;
+          return false
         }
-      });
+      })
     },
     // 对话框关闭时
-    handleDialogClose() {
-      this.$refs.ruleForm.resetFields();
+    handleDialogClose () {
+      this.$refs.ruleForm.resetFields()
     },
     // 对话框打开时
-    handleDialogOpen() {
-      this.form.uniqId = this.dialogData.uniqId || '';
-      this.form.method = this.dialogData.method || 'ALL';
-      this.form.pathname = this.dialogData.pathname || '';
-      this.form.description = this.dialogData.description || '';
+    handleDialogOpen () {
+      this.form.uniqId = this.dialogData.uniqId || ''
+      this.form.method = this.dialogData.method || 'ALL'
+      this.form.pathname = this.dialogData.pathname || ''
+      this.form.description = this.dialogData.description || ''
     }
   }
 }

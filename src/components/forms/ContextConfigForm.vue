@@ -1,6 +1,6 @@
 <template>
   <el-dialog
-    title="定义响应数据" 
+    title="定义响应数据"
     width="500px" center
     class="g-context-dialog"
     @open="handleDialogOpen"
@@ -44,22 +44,22 @@
 </template>
 
 <script>
-import { mapState } from 'vuex';
+import { mapState } from 'vuex'
 
-import { interfaceService } from '@/api';
-import { messageWrapper } from '@/utils/message';
+import { interfaceService } from '@/api'
+import { messageWrapper } from '@/utils/message'
 
 export default {
   props: ['dialogVisible', 'dialogData'],
   watch: {
-    dialogVisible() {
-      this.selfDialogVisible = this.dialogVisible;
+    dialogVisible () {
+      this.selfDialogVisible = this.dialogVisible
     },
-    selfDialogVisible() {
-      this.$emit('update:dialogVisible', this.selfDialogVisible);
+    selfDialogVisible () {
+      this.$emit('update:dialogVisible', this.selfDialogVisible)
     }
   },
-  data() {
+  data () {
     return {
       tableData: [],
       selfDialogVisible: false,
@@ -75,49 +75,49 @@ export default {
   }),
   methods: {
     // 打开对话框时
-    handleDialogOpen() {
-      const responseHeaders = this.dialogData.responseHeaders;
-      this.form.responseDelay = this.dialogData.responseDelay;
-      this.form.responseStatus = this.dialogData.responseStatus;
-      this.form.responseHeaders = responseHeaders;
+    handleDialogOpen () {
+      const responseHeaders = this.dialogData.responseHeaders
+      this.form.responseDelay = this.dialogData.responseDelay
+      this.form.responseStatus = this.dialogData.responseStatus
+      this.form.responseHeaders = responseHeaders
       Object.keys(responseHeaders).forEach((key) => {
         this.tableData.push({
           key,
           value: responseHeaders[key]
-        });
-      });
+        })
+      })
     },
     // 关闭对话框时
-    handleDialogClose() {
-      this.tableData = [];
+    handleDialogClose () {
+      this.tableData = []
     },
     // 更新接口
-    confirmUpdateInterface() {
-      this.form.responseHeaders = {};
+    confirmUpdateInterface () {
+      this.form.responseHeaders = {}
       this.tableData.forEach(({ key, value }) => {
         if (key && value) {
-          this.form.responseHeaders[key] = value;
+          this.form.responseHeaders[key] = value
         }
-      });
+      })
       const updatePromise = interfaceService.updateInterface.bind(null, {
         uniqId: this.currentInterface.uniqId,
         contextConfig: this.form
-      });
+      })
       messageWrapper('更新', updatePromise, () => {
-        this.$emit('update-success');
-        this.selfDialogVisible = false;
-      });
+        this.$emit('update-success')
+        this.selfDialogVisible = false
+      })
     },
     // 点击添加一项
-    handleAddRow() {
+    handleAddRow () {
       this.tableData.push({
         key: '',
         value: ''
-      });
+      })
     },
     // 点击删除一项
-    handleDeleteRow(index) {
-      this.tableData.splice(index, 1);
+    handleDeleteRow (index) {
+      this.tableData.splice(index, 1)
     }
   }
 }

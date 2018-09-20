@@ -1,68 +1,68 @@
 export const requestInterceptors = [
   {
     name: 'addHttpRequestHeader',
-    success(config) {
-      config.headers['X-Requested-With'] = 'XMLHttpRequest';
-      return config;
+    success (config) {
+      config.headers['X-Requested-With'] = 'XMLHttpRequest'
+      return config
     },
-    fail(err) {
-      console.error('request error: ', err);
-      return Promise.reject(err);
+    fail (err) {
+      console.error('request error: ', err)
+      return Promise.reject(err)
     }
   }
-];
+]
 
 export const responseInterceptors = [
-  {   
+  {
     name: 'formatResponse',
-    success(response) {
+    success (response) {
       const data = Object.assign({}, response.data, {
         __response: response
-      });
-      return data;
+      })
+      return data
     }
   },
   {
     name: 'handleError',
-    success(response) {
+    success (response) {
       if (!response.success) {
         // do something
       }
-      return response;
+      return response
     },
-    fail(err) {
-      console.error('response error: ', err);
+    fail (err) {
+      console.error('response error: ', err)
     }
   }
-];
+]
 
 const interceptors = {
   response: responseInterceptors,
   request: requestInterceptors
-};
+}
 
-function doInstall(instance, options = {}) {
-  const { type, ignoreIntercepors = [] } = options;
+function doInstall (instance, options = {}) {
+  const { type, ignoreIntercepors = [] } = options
   interceptors[type]
     .filter(interceptor => !~ignoreIntercepors.indexOf(interceptor.name))
     .forEach((interceptor) => {
-      const { success, fail } = interceptor;
-      instance.interceptors[type].use(success, fail);
-    });
+      const { success, fail } = interceptor
+      instance.interceptors[type].use(success, fail)
+    })
 }
 
-export function install(instance, option = {}) {
+export function install (instance, option = {}) {
   const {
     ignoreIntercepors = []
-  } = option;
+  } = option
 
   doInstall(instance, {
     type: 'request',
     ignoreIntercepors
-  });
+  })
 
   doInstall(instance, {
     type: 'response',
     ignoreIntercepors
-  });
+  })
 }
