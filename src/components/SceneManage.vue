@@ -9,8 +9,7 @@
           <div :class="{ 'm-icons': true,
             'u-opacity': currentScene === scene.sceneName }">
             <a :href="`${previewLink}${scene.sceneName}`" style="color: #409EFF" target="_blank">
-              <i class="u-icon el-icon-view" title="预览"
-                v-if="currentInterface.method === 'GET' || currentInterface.method === 'ALL'"></i>
+              <i class="u-icon el-icon-view" title="预览"></i>
             </a>
             <i class="u-icon el-icon-edit" title="编辑" @click.prevent="handleEditClick(scene)"></i>
             <i class="u-icon el-icon-delete" title="删除" @click.prevent="handleDeleteClick(scene.uniqId)"></i>

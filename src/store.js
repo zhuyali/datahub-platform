@@ -3,11 +3,15 @@ import Vuex from 'vuex'
 
 Vue.use(Vuex)
 
+const MAX_RECORD_COUNT = 100
+
 export default new Vuex.Store({
   state: {
     scenes: [],
     schemas: [],
     proxyList: {},
+    realTimeData: [],
+    currentRealTime: {},
     interfaceUniqId: '',
     currentInterface: {},
     activeName: 'interface-detail'
@@ -21,6 +25,13 @@ export default new Vuex.Store({
     },
     setActiveName (state, activeName) {
       state.activeName = activeName
+    },
+    setCurrentRealTime (state, currentRealTime) {
+      state.currentRealTime = currentRealTime
+    },
+    setRealTimeData (state, realTimeData) {
+      state.realTimeData.slice(0, MAX_RECORD_COUNT - 1)
+      state.realTimeData.unshift(realTimeData)
     },
     setProxy (state, { interfaceUniqId, enabled }) {
       state.proxyList[interfaceUniqId] = enabled
@@ -47,6 +58,12 @@ export default new Vuex.Store({
     },
     setProxy ({ commit }, { interfaceUniqId, enabled }) {
       commit('setProxy', { interfaceUniqId, enabled })
+    },
+    setCurrentRealTime ({ commit }, currentRealTime) {
+      commit('setCurrentRealTime', currentRealTime)
+    },
+    setRealTimeData ({ commit }, realTimeData) {
+      commit('setRealTimeData', realTimeData)
     },
     setProxyList ({ commit }, proxyList) {
       commit('setProxyList', proxyList)

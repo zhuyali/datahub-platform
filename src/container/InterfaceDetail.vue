@@ -1,6 +1,6 @@
 <template>
-  <div class="g-interface-detail">
-    <div class="g-interface-header">
+  <div class="g-interface-detail g-container">
+    <div class="g-interface-header g-container-header">
       <el-breadcrumb class="m-breadcrumb" separator-class="el-icon-arrow-right">
         <el-breadcrumb-item><a href="/">所有项目</a></el-breadcrumb-item>
         <el-breadcrumb-item>{{ projectName }}</el-breadcrumb-item>
@@ -19,7 +19,7 @@
         <el-button type="primary" size="mini" @click="handleDocClick">接口文档</el-button>
       </div>
     </div>
-    <div class="g-interface-content">
+    <div class="g-interface-content g-container-content">
       <interface-config @update-success="getOneInterface"></interface-config>
       <scene-manage @update-success="getOneInterface"></scene-manage>
       <proxy-mode @update-success="getOneInterface"></proxy-mode>
@@ -104,14 +104,8 @@ export default {
 
 <style lang="less" scoped>
 .g-interface-detail {
-  height: inherit;
-  padding: 0 20px;
   .g-interface-header {
-    position: relative;
     .m-btngroup {
-      position: absolute;
-      top: 5px;
-      right: 0;
       .u-switch {
         display: inline-block;
         padding: 0 15px;
@@ -126,17 +120,6 @@ export default {
         color: #fff;
       }
     }
-  }
-  .g-interface-content {
-    box-sizing: border-box;
-    height: calc(100% - 40px);
-    overflow: auto;
-    padding-bottom: 20px;
-  }
-  .m-breadcrumb {
-    height: 38px;
-    line-height: 38px;
-    border-bottom: 2px solid #e4e7ed;
   }
 }
 </style>

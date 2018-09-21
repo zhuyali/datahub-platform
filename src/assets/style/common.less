@@ -1,0 +1,73 @@
+body {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+  color: rgba(0,0,0,.65);
+  font-family: "Chinese Quote", -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Helvetica, Arial, sans-serif,
+  "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+}
+
+a {
+  text-decoration: none;
+  outline: none;
+  cursor: pointer;
+}
+
+.ellipsis {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.icon-shanchu {
+  color: #f61414;
+}
+
+.u-get, .success {
+  color: #70cf1f;
+}
+.u-post, .warning {
+  color: #f0811c;
+}
+.u-delete, .error {
+  color: #e63239;
+}
+.u-put {
+  color: #3b7bda;
+}
+
+.black {
+  color: #000;
+}
+
+.g-container {
+  height: inherit;
+  padding: 0 20px;
+  .g-container-header {
+    position: relative;
+    .m-btngroup {
+      position: absolute;
+      top: 5px;
+      right: 0;
+    }
+    .m-breadcrumb {
+      height: 38px;
+      line-height: 38px;
+      border-bottom: 2px solid #e4e7ed;
+    }
+  }
+  .g-container-content {
+    box-sizing: border-box;
+    height: calc(100% - 40px);
+    overflow: auto;
+    padding-bottom: 20px;
+  }
+}

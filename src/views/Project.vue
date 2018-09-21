@@ -5,7 +5,9 @@
         <el-tab-pane label="接口列表" name="interface">
           <interface-list></interface-list>
         </el-tab-pane>
-        <el-tab-pane label="实时快照" name="snapshot">实时快照</el-tab-pane>
+        <el-tab-pane label="实时快照" name="snapshot">
+          <real-time-list></real-time-list>
+        </el-tab-pane>
       </el-tabs>
     </div>
     <div class="g-main">
@@ -20,13 +22,15 @@
 import { mapState } from 'vuex'
 
 import {
-  InterfaceList, InterfaceDetail, InterfaceDoc
+  InterfaceList, InterfaceDetail, InterfaceDoc, RealTimeList, RealTimeDetail
 } from '@/container'
 
 export default {
   components: {
     'interface-doc': InterfaceDoc,
+    'real-time-list': RealTimeList,
     'interface-list': InterfaceList,
+    'snapshot-detail': RealTimeDetail,
     'interface-detail': InterfaceDetail
   },
   computed: {
@@ -37,7 +41,9 @@ export default {
       get () {
         return this.currentActiveName.split('-')[0]
       },
-      set () {}
+      set (activeName) {
+        this.$store.dispatch('setActiveName', activeName === 'interface' ? 'interface-detail' : 'snapshot-detail')
+      }
     },
     currentTabComponent () {
       return this.currentActiveName
