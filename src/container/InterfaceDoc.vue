@@ -6,11 +6,11 @@
         <el-breadcrumb-item>{{ projectName }}</el-breadcrumb-item>
         <el-breadcrumb-item v-if="breadcrumb">{{ breadcrumb }}</el-breadcrumb-item>
       </el-breadcrumb>
-      <div class="m-btngroup">
+      <div v-if="interfaceUniqId" class="m-btngroup">
         <el-button type="primary" size="mini" @click="handleConfigClick">接口配置</el-button>
       </div>
     </div>
-    <div class="g-doc-content g-container-content">
+    <div v-if="interfaceUniqId" class="g-doc-content g-container-content">
       <schema from="doc"></schema>
       <scene-data :key="interfaceUniqId"></scene-data>
     </div>

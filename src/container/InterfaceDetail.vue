@@ -6,7 +6,7 @@
         <el-breadcrumb-item>{{ projectName }}</el-breadcrumb-item>
         <el-breadcrumb-item v-if="breadcrumb">{{ breadcrumb }}</el-breadcrumb-item>
       </el-breadcrumb>
-      <div class="m-btngroup">
+      <div v-if="interfaceUniqId" class="m-btngroup">
         <div class="u-switch" type="primary" size="mini">
           <el-switch
             v-model="enabled"
@@ -19,7 +19,7 @@
         <el-button type="primary" size="mini" @click="handleDocClick">接口文档</el-button>
       </div>
     </div>
-    <div class="g-interface-content g-container-content">
+    <div v-if="interfaceUniqId" class="g-interface-content g-container-content">
       <interface-config @update-success="getOneInterface"></interface-config>
       <scene-manage @update-success="getOneInterface"></scene-manage>
       <proxy-mode @update-success="getOneInterface"></proxy-mode>

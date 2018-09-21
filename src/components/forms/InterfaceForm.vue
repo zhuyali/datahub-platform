@@ -26,6 +26,8 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
+
 import { interfaceService } from '@/api'
 import { messageWrapper } from '@/utils/message'
 
@@ -39,6 +41,9 @@ export default {
       this.$emit('update:dialogVisible', this.selfDialogVisible)
     }
   },
+  computed: mapState({
+    currentInterface: state => state.currentInterface
+  }),
   data () {
     return {
       selfDialogVisible: this.dialogVisible,
@@ -67,18 +72,20 @@ export default {
     confirmAddOrUpdateInterface () {
       this.$refs.ruleForm.validate((valid) => {
         if (valid) {
+          const successCb = (data) => {
+            this.$emit('add-or-update-success')
+            this.selfDialogVisible = false
+          }
           if (this.dialogType === 'add') {
             const addPromise = interfaceService.addInterface.bind(null, this.form)
-            messageWrapper('新增', addPromise, () => {
-              this.$emit('add-or-update-success')
-              this.selfDialogVisible = false
+            messageWrapper('新增', addPromise, (data) => {
+              successCb(data)
+              this.$store.dispatch('setCurrentInterface', data)
+              this.$store.dispatch('setInterfaceUniqId', data.uniqId)
             })
           } else {
             const updatePromise = interfaceService.updateInterface.bind(null, this.form)
-            messageWrapper('更新', updatePromise, () => {
-              this.$emit('add-or-update-success')
-              this.selfDialogVisible = false
-            })
+            messageWrapper('更新', updatePromise, successCb)
           }
         } else {
           return false

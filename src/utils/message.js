@@ -19,7 +19,7 @@ export function messageWrapper (type, operation, successCb = defaultCb, failCb =
   operation()
     .then((res) => {
       if (res && res.success) {
-        successCb()
+        successCb(res.data)
       } else {
         failCb()
       }

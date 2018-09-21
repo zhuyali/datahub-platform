@@ -11,7 +11,7 @@
         v-for="(interfaceItem, index) in filterInterfaces"
         :key="interfaceItem.uniqId"
         @click="handleInterfaceClick(interfaceItem, index)">
-        <div class="u-current-interface" v-show="currentInterfaceIndex === index"></div>
+        <div class="u-current-interface" v-show="interfaceItem.uniqId === interfaceUniqId"></div>
         <div class="m-interface-key">
           <div class="u-interface-path ellipsis" :title="interfaceItem.pathname">
             {{ interfaceItem.pathname }}
@@ -24,9 +24,9 @@
           {{ interfaceItem.description }}
         </div>
         <div :class="{ 'm-operate': true,
-          'u-opacity': currentInterfaceIndex === index }">
-          <i class="iconfont icon-shezhi u-icon" @click="handleUpdateClick(interfaceItem)"></i>
-          <i class="iconfont icon-shanchu u-icon" @click="handleDeleteClick(interfaceItem.uniqId)"></i>
+          'u-opacity': interfaceItem.uniqId === interfaceUniqId }">
+          <i class="iconfont icon-shezhi u-icon" @click.stop="handleUpdateClick(interfaceItem)"></i>
+          <i class="iconfont icon-shanchu u-icon" @click.stop="handleDeleteClick(interfaceItem.uniqId, index)"></i>
         </div>
       </div>
     </div>
@@ -57,12 +57,12 @@ export default {
       interfaces: [],
       dialogData: {},
       dialogType: 'add',
-      dialogVisible: false,
-      currentInterfaceIndex: 0
+      dialogVisible: false
     }
   },
   computed: {
     ...mapState({
+      interfaceUniqId: state => state.interfaceUniqId,
       currentInterface: state => state.currentInterface
     }),
     filterInterfaces () {
@@ -89,21 +89,24 @@ export default {
         for (let i = 0; i < this.interfaces.length; i++) {
           let interfaceItem = this.interfaces[i]
           if (interfaceItem.method === method && interfaceItem.pathname === pathname) {
-            this.currentInterfaceIndex = i
             this.$store.dispatch('setCurrentInterface', interfaceItem)
             this.$store.dispatch('setInterfaceUniqId', interfaceItem.uniqId)
             return
           }
         }
       }
-      this.currentInterfaceIndex = 0
       this.$store.dispatch('setCurrentInterface', this.interfaces[0] || {})
       this.$store.dispatch('setInterfaceUniqId', this.interfaces[0] ? this.interfaces[0].uniqId : '')
     },
     // 删除接口点击时
-    handleDeleteClick (uniqId) {
+    handleDeleteClick (uniqId, index) {
       const deletePromise = interfaceService.deleteInterface.bind(null, uniqId)
       confirmWrapper('删除', deletePromise, () => {
+        if (uniqId === this.interfaceUniqId) {
+          const item = this.interfaces[index + 1] || (index === 0 ? {} : this.interfaces[0])
+          this.$store.dispatch('setCurrentInterface', item)
+          this.$store.dispatch('setInterfaceUniqId', item.uniqId || '')
+        }
         this.getAllInterface()
       })
     },
@@ -126,7 +129,6 @@ export default {
     },
     // 点击选中接口时
     async handleInterfaceClick (interfaceItem, index) {
-      this.currentInterfaceIndex = index
       this.$store.dispatch('setInterfaceUniqId', interfaceItem.uniqId)
 
       const res = await interfaceService.getOneInterface(interfaceItem.uniqId)

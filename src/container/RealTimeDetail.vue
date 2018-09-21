@@ -5,11 +5,11 @@
         <el-breadcrumb-item><a href="/">所有项目</a></el-breadcrumb-item>
         <el-breadcrumb-item>{{ projectName }}</el-breadcrumb-item>
       </el-breadcrumb>
-      <div class="m-btngroup">
+      <div v-if="currentRealTime && Object.keys(currentRealTime).length" class="m-btngroup">
         <el-button type="primary" size="mini" @click="handleSaveScene">保存为新场景</el-button>
       </div>
     </div>
-    <div class="g-realtime-content g-container-content">
+    <div v-if="currentRealTime && Object.keys(currentRealTime).length" class="g-realtime-content g-container-content">
       <real-time-content type="request"></real-time-content>
       <real-time-content type="response"></real-time-content>
     </div>
