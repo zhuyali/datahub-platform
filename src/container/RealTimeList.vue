@@ -54,14 +54,11 @@ export default {
       switch (startNumber) {
         case '2':
           return 'success'
-          break
         case '3':
           return 'warning'
-          break
         case '4':
         case '5':
           return 'error'
-          break
       }
     },
     // 点击实时快照某一项

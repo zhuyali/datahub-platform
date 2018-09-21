@@ -27,9 +27,9 @@ export default {
       currentRealTime: state => state.currentRealTime || {}
     }),
     realtimeData () {
-      return this.type === 'request' ? 
-        this.currentRealTime.req || {} : 
-        this.currentRealTime.res || {}
+      return this.type === 'request'
+        ? this.currentRealTime.req || {}
+        : this.currentRealTime.res || {}
     },
     header () {
       const headers = this.realtimeData.headers || {}
@@ -41,13 +41,13 @@ export default {
         return JSON.stringify(realtimeBody, {}, 2)
       } else {
         try {
-          return JSON.stringify(JSON.parse(realtimeBody), {}, 2);
+          return JSON.stringify(JSON.parse(realtimeBody), {}, 2)
         } catch (e) {
-          return body;
+          return realtimeBody
         }
       }
     }
-  },
+  }
 }
 </script>
 
